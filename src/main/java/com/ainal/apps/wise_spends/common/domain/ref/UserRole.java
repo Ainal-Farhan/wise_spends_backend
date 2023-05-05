@@ -10,8 +10,10 @@ import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
 import com.ainal.apps.wise_spends.common.domain.userType.YesNoUserType;
 import com.ainal.apps.wise_spends.common.domain.usr.Role;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,8 +42,8 @@ public class UserRole extends BaseEntity {
 	@Column(name = "FLAG_ACTIVE", columnDefinition = "CHAR(1) DEFAULT 'Y'")
 	@Type(value = YesNoUserType.class)
 	private Boolean flagActive = Boolean.TRUE;
-	
-	@OneToMany(mappedBy = "userRole")
+
+	@OneToMany(mappedBy = "userRole", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Role> roleList = new ArrayList<>();
 
 	@Override

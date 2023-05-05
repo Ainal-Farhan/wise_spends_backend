@@ -1,8 +1,7 @@
 package com.ainal.apps.wise_spends.common.domain.usr;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.hibernate.annotations.LazyToOne;
+import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.Type;
 
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
@@ -18,7 +17,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.ForeignKey;
@@ -46,8 +44,10 @@ public class Role extends BaseEntity {
 	@JoinColumn(name = "USER_ROLE_ID", foreignKey = @ForeignKey(name = "FK_UR_REF_USER_ROLE_ID"))
 	private UserRole userRole;
 
-	@OneToMany(mappedBy = "role")
-	private List<User> userList = new ArrayList<>();
+	@ManyToOne(fetch = FetchType.LAZY)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_UR_USR_USER_ID"))
+	private User user;
 
 	@Override
 	public Long getId() {
@@ -83,12 +83,11 @@ public class Role extends BaseEntity {
 		this.userRole = userRole;
 	}
 
-	public List<User> getUserList() {
-		return userList;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserList(List<User> userList) {
-		this.userList = userList;
+	public void setUser(User user) {
+		this.user = user;
 	}
-
 }

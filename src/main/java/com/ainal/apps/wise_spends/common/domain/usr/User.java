@@ -1,13 +1,18 @@
 package com.ainal.apps.wise_spends.common.domain.usr;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.Type;
 
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
 import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
+import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
 import com.ainal.apps.wise_spends.common.domain.userType.YesNoUserType;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,7 +20,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -46,10 +51,11 @@ public class User extends BaseEntity {
 	@JoinColumn(name = "INDIVIDUAL_ID", unique = true, foreignKey = @ForeignKey(name = "FK_UU_USR_IND_ID"))
 	private Individual individual;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@JoinColumn(name = "ROLE_ID", foreignKey = @ForeignKey(name = "FK_UU_USR_ROLE_ID"))
-	private Role role;
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Role> roleList = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<MoneyStorage> moneyStorageList = new ArrayList<>();
 
 	@Override
 	public Long getId() {
@@ -85,12 +91,20 @@ public class User extends BaseEntity {
 		this.flagActive = flagActive;
 	}
 
-	public Role getRole() {
-		return role;
+	public List<Role> getRoleList() {
+		return roleList;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
+	}
+
+	public List<MoneyStorage> getMoneyStorageList() {
+		return moneyStorageList;
+	}
+
+	public void setMoneyStorageList(List<MoneyStorage> moneyStorageList) {
+		this.moneyStorageList = moneyStorageList;
 	}
 
 }
