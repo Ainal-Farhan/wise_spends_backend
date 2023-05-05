@@ -38,7 +38,7 @@ public class Credential extends BaseEntity {
 	@Column(name = "CREDENTIAL_ID")
 	private Long id;
 
-	@Column(name = "USERNAME", length = 20)
+	@Column(name = "USERNAME", length = 20, unique = true)
 	private String username;
 
 	@Column(name = "ENCRYPTED_PASSWORD", nullable = false)

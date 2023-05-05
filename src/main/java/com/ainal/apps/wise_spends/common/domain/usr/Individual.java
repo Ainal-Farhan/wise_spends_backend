@@ -34,7 +34,7 @@ public class Individual extends BaseEntity {
 	@Column(name = "LAST_NAME")
 	private String lastName;
 
-	@Column(name = "EMAIL")
+	@Column(name = "EMAIL", unique = true)
 	private String email;
 
 	@Column(name = "NICK_NAME")
