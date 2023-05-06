@@ -2,6 +2,7 @@ package com.ainal.apps.wise_spends.security.config;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +18,7 @@ import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -32,16 +34,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull FilterChain filterChain) throws ServletException, IOException {
 		final String authHeader = request.getHeader("Authorization");
-		final String jwt;
 		final String usernameOrEmail;
 		final String startWith = "Bearer ";
+		String jwt;
 
-		if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(startWith)) {
+		// Retrieve the token from the cookie
+		Cookie[] cookies = request.getCookies();
+		String token = Strings.EMPTY;
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("access_token")) {
+					token = cookie.getValue();
+					break;
+				}
+			}
+		}
+
+		if (StringUtils.isBlank(token) && (StringUtils.isBlank(authHeader) || !authHeader.startsWith(startWith))) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		jwt = authHeader.substring(startWith.length());
+		jwt = token;
+		if (StringUtils.isBlank(token)) {
+			jwt = authHeader.substring(startWith.length());
+		}
 		usernameOrEmail = jwtService.extractUsernameOrEmail(jwt);
 
 		if (!StringUtils.isBlank(usernameOrEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
@@ -51,13 +68,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			if (jwtService.isTokenValid(jwt, userJwtViewObject)) {
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 						userJwtViewObject, null, userJwtViewObject.getGrantedAuthorities());
-				
+
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				
+
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 		}
-		
+
 		filterChain.doFilter(request, response);
 	}
 
