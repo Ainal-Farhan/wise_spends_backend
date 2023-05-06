@@ -30,6 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Autowired
 	private IUserJwtViewObjectService userJwtViewObjectService;
+	
+	@Autowired
+	private WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
@@ -44,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String token = Strings.EMPTY;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (WiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME.equals(cookie.getName())) {
+				if (wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME().equals(cookie.getName())) {
 					token = cookie.getValue();
 					break;
 				}

@@ -26,6 +26,9 @@ public class LoginViewController {
 	@Autowired
 	private AuthenticationService authenticationService;
 
+	@Autowired
+	private WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
+
 	@GetMapping(path = { "/auth" })
 	String getLoginView() {
 		return "/public/login";
@@ -43,10 +46,10 @@ public class LoginViewController {
 			return new RedirectView("/login/auth");
 		}
 
-		Cookie tokenCookie = new Cookie(WiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME,
+		Cookie tokenCookie = new Cookie(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME(),
 				authenticationResponse.getToken());
 		tokenCookie.setHttpOnly(true);
-		tokenCookie.setDomain(WiseSpendsPropertiesUtils.WS_DOMAIN);
+		tokenCookie.setDomain(wiseSpendsPropertiesUtils.WS_DOMAIN());
 		tokenCookie.setPath("/");
 		response.addCookie(tokenCookie);
 

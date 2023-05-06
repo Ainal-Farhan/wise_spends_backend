@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ainal.apps.wise_spends.security.config.service.IJwtService;
@@ -22,6 +23,9 @@ import io.micrometer.common.util.StringUtils;
 
 @Service
 public class JwtService implements IJwtService {
+	@Autowired
+	private WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
+
 	@Override
 	public String extractUsernameOrEmail(String token) {
 		if (StringUtils.isBlank(token)) {
@@ -60,7 +64,7 @@ public class JwtService implements IJwtService {
 	}
 
 	private Key getSignInKey() {
-		byte[] keyBytes = Decoders.BASE64.decode(WiseSpendsPropertiesUtils.JWT_SECRET_KEY);
+		byte[] keyBytes = Decoders.BASE64.decode(wiseSpendsPropertiesUtils.JWT_SECRET_KEY());
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
