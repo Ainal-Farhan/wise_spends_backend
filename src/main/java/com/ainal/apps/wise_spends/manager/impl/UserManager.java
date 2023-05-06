@@ -11,9 +11,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
+import com.ainal.apps.wise_spends.common.domain.ref.UserRole;
 import com.ainal.apps.wise_spends.common.domain.usr.Individual;
 import com.ainal.apps.wise_spends.common.domain.usr.Role;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
+import com.ainal.apps.wise_spends.common.service.ref.IUserRoleService;
 import com.ainal.apps.wise_spends.common.service.usr.IIndividualService;
 import com.ainal.apps.wise_spends.common.service.usr.IRoleService;
 import com.ainal.apps.wise_spends.common.service.usr.IUserService;
@@ -30,6 +32,9 @@ public class UserManager implements IUserManager {
 	IRoleService roleService;
 
 	@Autowired
+	IUserRoleService userRoleService;
+
+	@Autowired
 	IIndividualService individualService;
 
 	@Override
@@ -44,8 +49,11 @@ public class UserManager implements IUserManager {
 
 		if (!CollectionUtils.isEmpty(roles)) {
 			for (Role role : roles) {
-				if (role.getUserRole() != null && role.getUserRole().getFlagActive()) {
-					gAList.add(new SimpleGrantedAuthority(role.getUserRole().getCode()));
+				if (role.getUserRole() != null) {
+					UserRole userRole = userRoleService.findUserRoleId(role.getUserRole().getId());
+					if (userRole != null && userRole.getFlagActive()) {
+						gAList.add(new SimpleGrantedAuthority(userRole.getCode()));
+					}
 				}
 			}
 
@@ -71,6 +79,11 @@ public class UserManager implements IUserManager {
 		List<User> userList = individualList.stream().map(individual -> individual.getUser()).toList().stream()
 				.filter(user -> user.getFlagActive() != null && user.getFlagActive()).collect(Collectors.toList());
 		return userList;
+	}
+
+	@Override
+	public Individual findByUser(User user) {
+		return individualService.findIndividualByUser(user);
 	}
 
 }

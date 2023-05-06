@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ainal.apps.wise_spends.common.domain.usr.Individual;
+import com.ainal.apps.wise_spends.common.domain.usr.User;
 import com.ainal.apps.wise_spends.common.repository.usr.IIndividualRepository;
 import com.ainal.apps.wise_spends.common.service.BaseService;
 import com.ainal.apps.wise_spends.common.service.usr.IIndividualService;
@@ -17,14 +18,23 @@ import jakarta.transaction.Transactional;
 @Transactional
 public class IndividualService extends BaseService implements IIndividualService {
 	@Autowired
-	IIndividualRepository individualRepository;	
-	
+	IIndividualRepository individualRepository;
+
 	@Override
 	public List<Individual> findIndividualByEmail(String email) {
-		if(StringUtils.isBlank(email)) {
+		if (StringUtils.isBlank(email)) {
 			return List.of();
 		}
 		return individualRepository.findByEmail(email);
 	}
-	
+
+	@Override
+	public Individual findIndividualByUser(User user) {
+		if (user == null) {
+			return null;
+		}
+
+		return individualRepository.findByUser(user).orElse(null);
+	}
+
 }

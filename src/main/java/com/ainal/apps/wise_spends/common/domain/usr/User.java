@@ -41,8 +41,7 @@ public class User extends BaseEntity {
 	@Type(value = YesNoUserType.class)
 	private Boolean flagActive = Boolean.TRUE;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CREDENTIAL_ID", unique = true, foreignKey = @ForeignKey(name = "FK_UU_USR_CRE_ID"))
 	private Credential credential;
 

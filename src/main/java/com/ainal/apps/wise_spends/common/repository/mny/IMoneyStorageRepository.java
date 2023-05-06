@@ -1,9 +1,8 @@
 package com.ainal.apps.wise_spends.common.repository.mny;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
+import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
 
-public interface IMoneyStorageRepository extends JpaRepository<MoneyStorage, Long> {
+public interface IMoneyStorageRepository extends BaseEntityRepository<MoneyStorage> {
 
 }

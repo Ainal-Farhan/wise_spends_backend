@@ -1,8 +1,12 @@
 package com.ainal.apps.wise_spends.security.auth;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +20,15 @@ import com.ainal.apps.wise_spends.common.repository.usr.ICredentialRepository;
 import com.ainal.apps.wise_spends.common.repository.usr.IIndividualRepository;
 import com.ainal.apps.wise_spends.common.repository.usr.IRoleRepository;
 import com.ainal.apps.wise_spends.common.repository.usr.IUserRepository;
+import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.security.config.service.IJwtService;
 import com.ainal.apps.wise_spends.security.config.service.IUserJwtViewObjectService;
 import com.ainal.apps.wise_spends.security.config.vo.UserJwtViewObject;
 
+import jakarta.transaction.Transactional;
+
 @Service
+@Transactional
 public class AuthenticationService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -49,24 +57,33 @@ public class AuthenticationService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	public AuthenticationResponse register(RegisterRequest request) {
-		Credential credential = new Credential();
-		credential.setUsername(request.getUsername());
-		credential.setFlagUsernameIsEmail(request.getFlagUsernameIsEmail());
-		credential.setEncryptedPassword(passwordEncoder.encode(request.getPassword()));
-		credential = credentialRepository.saveAndFlush(credential);
+	@Autowired
+	private IBaseManager baseManager;
 
+	public AuthenticationResponse register(RegisterRequest request) {
 		Individual individual = new Individual();
 		individual.setFirstName(request.getFirstName());
 		individual.setLastName(request.getLastName());
 		individual.setNickName(request.getNickName());
 		individual.setGender(request.getGender());
 		individual.setEmail(request.getEmail());
+		baseManager.setBaseEntityAttributes(individual,
+				request.getFlagUsernameIsEmail() ? individual.getEmail() : request.getUsername());
 		individual = individualRepository.saveAndFlush(individual);
+
+		Credential credential = new Credential();
+		credential.setUsername(request.getUsername());
+		credential.setFlagUsernameIsEmail(request.getFlagUsernameIsEmail());
+		credential.setEncryptedPassword(passwordEncoder.encode(request.getPassword()));
+		baseManager.setBaseEntityAttributes(credential,
+				credential.getFlagUsernameIsEmail() ? individual.getEmail() : credential.getUsername());
+		credential = credentialRepository.saveAndFlush(credential);
 
 		User user = new User();
 		user.setCredential(credential);
 		user.setIndividual(individual);
+		baseManager.setBaseEntityAttributes(user,
+				credential.getFlagUsernameIsEmail() ? individual.getEmail() : credential.getUsername());
 		user = userRepository.saveAndFlush(user);
 
 		UserRole userRole = new UserRole();
@@ -76,10 +93,19 @@ public class AuthenticationService {
 		role.setUser(user);
 		role.setFlagMainRole(Boolean.TRUE);
 		role.setUserRole(userRole);
+		baseManager.setBaseEntityAttributes(role,
+				credential.getFlagUsernameIsEmail() ? individual.getEmail() : credential.getUsername());
 		roleRepository.saveAndFlush(role);
 
-		String jwtToken = jwtService.generateToken(userJwtViewObjectService.loadUserJwtViewObjectByUsernameOrEmail(
-				credential.getFlagUsernameIsEmail() ? individual.getEmail() : credential.getUsername()));
+		UserJwtViewObject userJwtViewObject = new UserJwtViewObject();
+		userJwtViewObject
+				.setUsernameOrEmail(request.getFlagUsernameIsEmail() ? request.getEmail() : request.getUsername());
+		userJwtViewObject.setPassword(request.getPassword());
+		userJwtViewObject
+				.setGrantedAuthorities(List.of((GrantedAuthority) new SimpleGrantedAuthority(userRole.getCode())));
+		userJwtViewObject.setName(request.getNickName());
+
+		String jwtToken = jwtService.generateToken(userJwtViewObject);
 
 		AuthenticationResponse authenticationResponse = new AuthenticationResponse();
 		authenticationResponse.setToken(jwtToken);
@@ -90,7 +116,7 @@ public class AuthenticationService {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(request.getUsernameOrEmail(), request.getPassword()));
 		UserJwtViewObject userJwtViewObject = userJwtViewObjectService
-				.loadUserJwtViewObjectByUsernameOrEmail(request.getUsernameOrEmail());
+				.loadUserJwtViewObjectByUsernameOrEmail(request.getUsernameOrEmail()).orElse(null);
 		String jwtToken = jwtService.generateToken(userJwtViewObject);
 
 		AuthenticationResponse authenticationResponse = new AuthenticationResponse();

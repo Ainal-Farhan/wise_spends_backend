@@ -1,6 +1,7 @@
 package com.ainal.apps.wise_spends.security.config.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +24,15 @@ public class UserJwtViewObjectService implements IUserJwtViewObjectService {
 	ICredentialManager credentialManager;
 
 	@Override
-	public UserJwtViewObject loadUserJwtViewObjectByUsernameOrEmail(String usernameOrEmail) {
+	public Optional<UserJwtViewObject> loadUserJwtViewObjectByUsernameOrEmail(String usernameOrEmail) {
 		List<Credential> credentialList = credentialManager.findCredentialByUsernameOrEmail(usernameOrEmail);
 		UserJwtViewObject userJwtViewObject = null;
 
-		if (!CollectionUtils.isEmpty(credentialList)) {
+  		if (!CollectionUtils.isEmpty(credentialList)) {
 			Credential credential = credentialList.get(0);
 			User user = credential.getUser();
 			if (user != null) {
-				Individual individual = user.getIndividual();
+				Individual individual = userManager.findByUser(user);
 				userJwtViewObject = new UserJwtViewObject();
 
 				userJwtViewObject.setUsernameOrEmail(credential.getUsername());
@@ -47,7 +48,7 @@ public class UserJwtViewObjectService implements IUserJwtViewObjectService {
 			}
 		}
 
-		return userJwtViewObject;
+		return Optional.ofNullable(userJwtViewObject);
 	}
 
 }

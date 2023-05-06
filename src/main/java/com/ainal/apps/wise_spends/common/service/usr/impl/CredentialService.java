@@ -22,7 +22,7 @@ public class CredentialService extends BaseService implements ICredentialService
 		if (StringUtils.isBlank(username)) {
 			return null;
 		}
-		return credentialRepository.findByUsernameAndUsernameIsNotEmail(username).orElse(null);
+		return credentialRepository.findByUsername(username).orElse(null);
 	}
 
 }

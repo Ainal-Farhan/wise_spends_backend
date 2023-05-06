@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String usernameOrEmail;
 		final String startWith = "Bearer ";
 
-		if (StringUtils.isBlank(authHeader) || authHeader.startsWith(startWith)) {
+		if (StringUtils.isBlank(authHeader) || !authHeader.startsWith(startWith)) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -44,9 +44,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		jwt = authHeader.substring(startWith.length());
 		usernameOrEmail = jwtService.extractUsernameOrEmail(jwt);
 
-		if (!StringUtils.isBlank(usernameOrEmail) && SecurityContextHolder.getContext().getAuthentication() != null) {
+		if (!StringUtils.isBlank(usernameOrEmail) && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserJwtViewObject userJwtViewObject = this.userJwtViewObjectService
-					.loadUserJwtViewObjectByUsernameOrEmail(usernameOrEmail);
+					.loadUserJwtViewObjectByUsernameOrEmail(usernameOrEmail).orElse(null);
 
 			if (jwtService.isTokenValid(jwt, userJwtViewObject)) {
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
