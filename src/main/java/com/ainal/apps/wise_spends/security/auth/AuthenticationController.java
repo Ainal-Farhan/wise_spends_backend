@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ainal.apps.wise_spends.manager.IReferenceManager;
 
+import io.micrometer.common.lang.NonNull;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -30,8 +32,8 @@ public class AuthenticationController {
 	}
 
 	@GetMapping("/reset")
-	public String reset() {
+	public String reset(@NonNull HttpServletRequest request) {
 		referenceManager.resetUserRoleRef();
-		return "OK";
+		return "OK" + " " + request.getServerName();
 	}
 }

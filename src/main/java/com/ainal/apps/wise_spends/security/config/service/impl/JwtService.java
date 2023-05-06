@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ainal.apps.wise_spends.security.config.service.IJwtService;
 import com.ainal.apps.wise_spends.security.config.vo.UserJwtViewObject;
+import com.ainal.apps.wise_spends.util.properties.WiseSpendsPropertiesUtils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -21,8 +22,6 @@ import io.micrometer.common.util.StringUtils;
 
 @Service
 public class JwtService implements IJwtService {
-	private static final String SECRET_KEY = "24432646294A404E635266556A586E3272357538782F413F442A472D4B615064";
-
 	@Override
 	public String extractUsernameOrEmail(String token) {
 		if (StringUtils.isBlank(token)) {
@@ -61,7 +60,7 @@ public class JwtService implements IJwtService {
 	}
 
 	private Key getSignInKey() {
-		byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+		byte[] keyBytes = Decoders.BASE64.decode(WiseSpendsPropertiesUtils.JWT_SECRET_KEY);
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 

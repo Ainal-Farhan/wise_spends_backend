@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ainal.apps.wise_spends.security.config.service.IJwtService;
 import com.ainal.apps.wise_spends.security.config.service.IUserJwtViewObjectService;
 import com.ainal.apps.wise_spends.security.config.vo.UserJwtViewObject;
+import com.ainal.apps.wise_spends.util.properties.WiseSpendsPropertiesUtils;
 
 import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.util.StringUtils;
@@ -43,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		String token = Strings.EMPTY;
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
-				if (cookie.getName().equals("access_token")) {
+				if (WiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME.equals(cookie.getName())) {
 					token = cookie.getValue();
 					break;
 				}

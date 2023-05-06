@@ -11,6 +11,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.ainal.apps.wise_spends.security.auth.AuthenticationRequest;
 import com.ainal.apps.wise_spends.security.auth.AuthenticationResponse;
 import com.ainal.apps.wise_spends.security.auth.AuthenticationService;
+import com.ainal.apps.wise_spends.util.properties.WiseSpendsPropertiesUtils;
 import com.ainal.apps.wise_spends.view.form.login.LoginForm;
 
 import io.micrometer.common.lang.NonNull;
@@ -42,9 +43,10 @@ public class LoginViewController {
 			return new RedirectView("/login/auth");
 		}
 
-		Cookie tokenCookie = new Cookie("access_token", authenticationResponse.getToken());
+		Cookie tokenCookie = new Cookie(WiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME,
+				authenticationResponse.getToken());
 		tokenCookie.setHttpOnly(true);
-		tokenCookie.setDomain(request.getServerName());
+		tokenCookie.setDomain(WiseSpendsPropertiesUtils.WS_DOMAIN);
 		tokenCookie.setPath("/");
 		response.addCookie(tokenCookie);
 
