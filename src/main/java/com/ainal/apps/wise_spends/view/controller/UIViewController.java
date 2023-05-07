@@ -19,28 +19,28 @@ public class UIViewController {
 
 	@GetMapping("/utilities-color")
 	public String utilitiesColor(Model model) {
-		model.addAttribute("content", "utilities_color");
+		model.addAttribute("contentPath", "/public/ui/utilities-color");
 		model.addAttribute("title", "WS - Utilities Color");
 		return "/public/index";
 	}
 
 	@GetMapping("/utilities-animation")
 	public String utilitiesAnimation(Model model) {
-		model.addAttribute("content", "utilities_animation");
+		model.addAttribute("contentPath", "/public/ui/utilities-animation");
 		model.addAttribute("title", "WS - Utilities Animation");
 		return "/public/index";
 	}
 
 	@GetMapping("/utilities-border")
 	public String utilitiesBorder(Model model) {
-		model.addAttribute("content", "utilities_border");
+		model.addAttribute("contentPath", "/public/ui/utilities-border");
 		model.addAttribute("title", "WS - Utilities Border");
 		return "/public/index";
 	}
 
 	@GetMapping("/utilities-other")
 	public String utilitiesOther(Model model) {
-		model.addAttribute("content", "utilities_other");
+		model.addAttribute("contentPath", "/public/ui/utilities-other");
 		model.addAttribute("title", "WS - Utilities Other");
 		return "/public/index";
 	}

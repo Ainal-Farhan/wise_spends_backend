@@ -25,29 +25,7 @@
 				<!-- End of Topbar -->
 
 				<!-- Begin Page Content -->
-				<div th:if="${content == 'utilities_color'}">
-					<div
-						th:replace="~{public/ui/utilities-color ::
-						content_utilities_color}"></div>
-				</div>
-
-				<div th:if="${content == 'utilities_animation'}">
-					<div
-						th:replace="~{public/ui/utilities-animation ::
-						content_utilities_animation}"></div>
-				</div>
-
-				<div th:if="${content == 'utilities_border'}">
-					<div
-						th:replace="~{public/ui/utilities-border ::
-						content_utilities_border}"></div>
-				</div>
-
-				<div th:if="${content == 'utilities_other'}">
-					<div
-						th:replace="~{public/ui/utilities-other ::
-						content_utilities_other}"></div>
-				</div>
+				<div th:replace="~{${contentPath} :: content}"></div>
 				<!-- /.container-fluid -->
 
 			</div>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+		<div th:fragment="js(flagBootstrap, flagJquery, flagCustomScript, flagChartJs, flagChartAreaDemo, flagChartPieDemo)">
+			<!-- Bootstrap core JavaScript-->
+			<script th:if="${flagBootstrap}" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+			<script th:if="${flagBootstrap}" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+			<!-- Core plugin JavaScript-->
+			<script th:if="${flagJquery}" th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+
+			<!-- Custom scripts for all pages-->
+			<script th:if="${flagCustomScript}" th:src="@{/js/sb-admin-2.min.js}"></script>
+			
+			<!-- Page level plugins -->
+			<script th:if="${flagChartJs}" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+		
+			<!-- Page level custom scripts -->
+			<script th:if="${flagChartAreaDemo}" th:src="@{/js/demo/chart-area-demo.js}"></script>
+			<script th:if="${flagChartPieDemo}" th:src="@{/js/demo/chart-pie-demo.js}"></script>
+		</div>
+	</body>
+</html>

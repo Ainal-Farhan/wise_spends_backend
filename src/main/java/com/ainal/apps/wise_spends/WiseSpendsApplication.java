@@ -6,6 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
 @PropertySource("classpath:wise_spends.properties")
+@PropertySource("classpath:thymeleaf.properties")
 public class WiseSpendsApplication {
 
 	public static void main(String[] args) {
