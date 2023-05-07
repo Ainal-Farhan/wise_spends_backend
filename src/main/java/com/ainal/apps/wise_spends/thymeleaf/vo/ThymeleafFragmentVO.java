@@ -1,22 +1,37 @@
-package com.ainal.apps.wise_spends.thymeleaf.vo.fragment;
+package com.ainal.apps.wise_spends.thymeleaf.vo;
 
 import java.util.HashMap;
 
 import org.apache.logging.log4j.util.Strings;
 
-public class FragmentVO {
+public class ThymeleafFragmentVO {
 	private String thPath;
 	private String thId;
 	private String path;
 	private String id;
-	private HashMap<String, ThymeleafParamVO> params;
+	private HashMap<String, ThymeleafParamAttributeVO> params;
 
-	public FragmentVO() {
+	public ThymeleafFragmentVO() {
 		thPath = Strings.EMPTY;
 		thId = Strings.EMPTY;
 		path = Strings.EMPTY;
 		id = Strings.EMPTY;
 		params = new HashMap<>();
+	}
+
+	public ThymeleafFragmentVO(String id, String path) {
+		this.path = path;
+		this.id = id;
+		params = new HashMap<>();
+	}
+
+	public ThymeleafFragmentVO(String id, String path, HashMap<String, ThymeleafParamAttributeVO> params) {
+		this.path = path;
+		this.id = id;
+		if (params == null) {
+			params = new HashMap<>();
+		}
+		this.params = params;
 	}
 
 	public String getThPath() {
@@ -51,11 +66,11 @@ public class FragmentVO {
 		this.id = id;
 	}
 
-	public HashMap<String, ThymeleafParamVO> getParams() {
+	public HashMap<String, ThymeleafParamAttributeVO> getParams() {
 		return params;
 	}
 
-	public void setParams(HashMap<String, ThymeleafParamVO> params) {
+	public void setParams(HashMap<String, ThymeleafParamAttributeVO> params) {
 		this.params = params;
 	}
 }

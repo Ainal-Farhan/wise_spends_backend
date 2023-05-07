@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-	<div th:fragment="modal(flagModalLogout)">
+	<div th:fragment="modal">
 		<div th:if="${flagModalLogout}">
-			<div th:replace="~{/public/modals/logout-modal :: modal}"></div>
+			<div th:replace="~{/html/modals/logout-modal :: modal}"></div>
 		</div>
 	</div>
 </body>

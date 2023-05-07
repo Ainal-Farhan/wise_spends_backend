@@ -1,4 +1,4 @@
-package com.ainal.apps.wise_spends.thymeleaf.vo.fragment;
+package com.ainal.apps.wise_spends.thymeleaf.vo;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +11,7 @@ import com.ainal.apps.wise_spends.util.properties.ThymeleafPropertiesUtils;
 import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.util.StringUtils;
 
-public class ThymeleafParamVO {
+public abstract class ThymeleafParamAttributeVO {
 	private String name;
 	private Object value;
 	private String type;
@@ -19,11 +19,12 @@ public class ThymeleafParamVO {
 	private static final String SEPERATOR_DATA_TYPE = "::";
 	private static final String SEPERATOR_DEFAULT_CONTENT = ":";
 
-	public ThymeleafParamVO() {
+	protected ThymeleafParamAttributeVO() {
 		initDefault();
 	}
 
-	public ThymeleafParamVO(String rawString, @NonNull final ThymeleafPropertiesUtils thymeleafPropertiesUtils) {
+	protected ThymeleafParamAttributeVO(String rawString,
+			@NonNull final ThymeleafPropertiesUtils thymeleafPropertiesUtils) {
 		if (StringUtils.isBlank(rawString)) {
 			initDefault();
 			return;
@@ -98,4 +99,5 @@ public class ThymeleafParamVO {
 	public String toString() {
 		return name + SEPERATOR_DEFAULT_CONTENT + value + SEPERATOR_DATA_TYPE + type;
 	}
+
 }

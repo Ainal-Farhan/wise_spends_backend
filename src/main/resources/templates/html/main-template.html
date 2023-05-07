@@ -49,7 +49,7 @@
 	<!-- End of Page Wrapper -->
 
 	<!-- Modal -->
-	<div th:replace="~{${modalThFragment}}"></div>
+	<div th:replace="~{${modalPathThFragment} :: ${modalThFragment}}"></div>
 
 	<!-- Scroll to Top Button-->
 	<div th:if="${flagScrollTopButton}">

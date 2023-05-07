@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<body>
-		<div th:fragment="js(flagBootstrap, flagJquery, flagCustomScript, flagChartJs, flagChartAreaDemo, flagChartPieDemo)">
+		<div th:fragment="js">
 			<!-- Bootstrap core JavaScript-->
 			<script th:if="${flagBootstrap}" th:src="@{/vendor/jquery/jquery.min.js}"></script>
 			<script th:if="${flagBootstrap}" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>

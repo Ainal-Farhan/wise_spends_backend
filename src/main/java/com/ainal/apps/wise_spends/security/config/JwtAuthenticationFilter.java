@@ -13,7 +13,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.ainal.apps.wise_spends.security.config.service.IJwtService;
 import com.ainal.apps.wise_spends.security.config.service.IUserJwtViewObjectService;
 import com.ainal.apps.wise_spends.security.config.vo.UserJwtViewObject;
-import com.ainal.apps.wise_spends.util.properties.ThymeleafPropertiesUtils;
 import com.ainal.apps.wise_spends.util.properties.WiseSpendsPropertiesUtils;
 
 import io.micrometer.common.lang.NonNull;
@@ -35,9 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	private WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
 
-	@Autowired
-	private ThymeleafPropertiesUtils thymeleafPropertiesUtils;
-
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
 			@NonNull FilterChain filterChain) throws ServletException, IOException {
@@ -45,8 +41,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String usernameOrEmail;
 		final String startWith = "Bearer ";
 		String jwt;
-
-		thymeleafPropertiesUtils.getHeaderFragment();
 
 		// Retrieve the token from the cookie
 		Cookie[] cookies = request.getCookies();
