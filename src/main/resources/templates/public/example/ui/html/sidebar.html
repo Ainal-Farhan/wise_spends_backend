@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 </head>
 <body>
-	<div th:fragment="html_sidebar(active)">
+	<div th:fragment="sidebar">
 		<ul
 			class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
 			id="accordionSidebar">
@@ -12,7 +12,7 @@
 			<!-- Sidebar - Brand -->
 			<a
 				class="sidebar-brand d-flex align-items-center justify-content-center"
-				href="/">
+				href="/ui/examples/template">
 				<div class="sidebar-brand-icon rotate-n-15">
 					<i class="fas fa-laugh-wink"></i>
 				</div>
@@ -26,7 +26,8 @@
 
 			<!-- Nav Item - Dashboard -->
 			<li class="nav-item active"><a class="nav-link"
-				href="/dashboard"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span>
+				href="/ui/examples/template/dashboard"> <i
+					class="fas fa-fw fa-tachometer-alt"></i> <span>Dashboard</span>
 			</a></li>
 
 			<!-- Divider -->
@@ -45,8 +46,8 @@
 					data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Custom Components:</h6>
-						<a class="collapse-item" href="/buttons">Buttons</a> <a
-							class="collapse-item" href="/cards">Cards</a>
+						<a class="collapse-item" href="/ui/examples/template/buttons">Buttons</a>
+						<a class="collapse-item" href="/ui/examples/template/cards">Cards</a>
 					</div>
 				</div></li>
 
@@ -61,10 +62,14 @@
 					aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Custom Utilities:</h6>
-						<a class="collapse-item" href="/utilities-color">Colors</a> <a
-							class="collapse-item" href="/utilities-border">Borders</a> <a
-							class="collapse-item" href="/utilities-animation">Animations</a>
-						<a class="collapse-item" href="/utilities-other">Other</a>
+						<a class="collapse-item"
+							href="/ui/examples/template/utilities-color">Colors</a> <a
+							class="collapse-item"
+							href="/ui/examples/template/utilities-border">Borders</a> <a
+							class="collapse-item"
+							href="/ui/examples/template/utilities-animation">Animations</a> <a
+							class="collapse-item"
+							href="/ui/examples/template/utilities-other">Other</a>
 					</div>
 				</div></li>
 
@@ -85,26 +90,29 @@
 					aria-labelledby="headingPages" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Login Screens:</h6>
-						<a class="collapse-item" href="/login/auth">Login</a> <a
-							class="collapse-item" href="/register">Register</a> <a
-							class="collapse-item" href="/forgot-password">Forgot Password</a>
+						<a class="collapse-item" href="/ui/examples/template/login">Login</a>
+						<a class="collapse-item" href="/ui/examples/template/register">Register</a>
+						<a class="collapse-item"
+							href="/ui/examples/template/forgot-password">Forgot Password</a>
 						<div class="collapse-divider"></div>
 						<h6 class="collapse-header">Other Pages:</h6>
-						<a class="collapse-item active" href="/error/404">404 Page</a> <a
-							class="collapse-item" href="/blank">Blank Page</a>
+						<a class="collapse-item active"
+							href="/ui/examples/template/error/404">404 Page</a> <a
+							class="collapse-item" href="/ui/examples/template/blank">Blank
+							Page</a>
 					</div>
 				</div></li>
 
 			<!-- Nav Item - Charts -->
 			<li class="nav-item ${active == 'charts'? 'active' : ''}"><a
-				class="nav-link" href="/charts"> <i
+				class="nav-link" href="/ui/examples/template/charts"> <i
 					class="fas fa-fw fa-chart-area"></i> <span>Charts</span>
 			</a></li>
 
 			<!-- Nav Item - Tables -->
 			<li class="nav-item ${active == 'tables'? 'active' : ''}"><a
-				class="nav-link" href="/tables"> <i class="fas fa-fw fa-table"></i>
-					<span>Tables</span>
+				class="nav-link" href="/ui/examples/template/tables"> <i
+					class="fas fa-fw fa-table"></i> <span>Tables</span>
 			</a></li>
 
 			<!-- Divider -->

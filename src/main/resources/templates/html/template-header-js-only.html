@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{${headerPathThFragment} :: ${headerThFragment}}">
+</head>
+
+<body class="bg-gradient-primary">
+	<!-- Begin Page Content -->
+	<div th:replace="~{${contentPathThFragment} :: ${contentThFragment}}"></div>
+	<!-- /.container-fluid -->
+
+	<div th:replace="~{${jsPathThFragment} :: ${jsThFragment}}"></div>
+</body>
+
+</html>

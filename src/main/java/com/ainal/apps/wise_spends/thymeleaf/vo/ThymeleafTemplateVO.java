@@ -13,6 +13,14 @@ public class ThymeleafTemplateVO {
 		attributes = new HashMap<>();
 	}
 
+	public ThymeleafTemplateVO(String path, HashMap<String, ThymeleafParamAttributeVO> attributes) {
+		this.path = path;
+		this.attributes = new HashMap<>();
+		if (attributes != null) {
+			this.attributes = attributes;
+		}
+	}
+
 	public String getPath() {
 		return path;
 	}

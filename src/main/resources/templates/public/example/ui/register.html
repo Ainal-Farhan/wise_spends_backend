@@ -1,14 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 
-<head
-	th:replace="~{fragments/header :: html_header(title='WS - Register',flagFontAwesome=true,flagFontsGoogleapis=true,flagStyle=true)}">
-</head>
-
-<body class="bg-gradient-primary">
-
-	<div class="container">
-
+<body>
+	<div th:fragment="content" class="container">
 		<div class="card o-hidden border-0 shadow-lg my-5">
 			<div class="card-body p-0">
 				<!-- Nested Row within Card Body -->
@@ -44,8 +38,9 @@
 											id="exampleRepeatPassword" placeholder="Repeat Password">
 									</div>
 								</div>
-								<a href="/login/auth" class="btn btn-primary btn-user btn-block">
-									Register Account </a>
+								<a href="/ui/examples/template/login"
+									class="btn btn-primary btn-user btn-block"> Register
+									Account </a>
 								<hr>
 								<a href="index.html" class="btn btn-google btn-user btn-block">
 									<i class="fab fa-google fa-fw"></i> Register with Google
@@ -56,23 +51,19 @@
 							</form>
 							<hr>
 							<div class="text-center">
-								<a class="small" href="/forgot-password">Forgot Password?</a>
+								<a class="small" href="/ui/examples/template/forgot-password">Forgot
+									Password?</a>
 							</div>
 							<div class="text-center">
-								<a class="small" href="/login/auth">Already have an account?
-									Login!</a>
+								<a class="small" href="/ui/examples/template/login">Already
+									have an account? Login!</a>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 	</div>
-
-	<div
-		th:replace="~{fragments/js :: html_js(flagBootstrap=true, flagJquery=true, flagCustomScript=true, flagChartJs=false, flagChartAreaDemo=false, flagChartPieDemo=false)}"></div>
-
 </body>
 
 </html>

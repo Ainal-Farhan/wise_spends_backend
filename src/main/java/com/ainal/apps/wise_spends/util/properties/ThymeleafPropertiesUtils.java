@@ -20,6 +20,8 @@ import io.micrometer.common.util.StringUtils;
 
 @Component
 public class ThymeleafPropertiesUtils {
+	public static final String DIR_EXAMPLE_TEMPLATE = "/public/example/ui/";
+
 	private static final String THYMELEAF_ENV_DATA_REF = "thymeleaf.reference.data.type.";
 	private static final String THYMELEAF_ENV_DATA_REF_BOOLEAN = THYMELEAF_ENV_DATA_REF + "boolean";
 	private static final String THYMELEAF_ENV_DATA_REF_STRING = THYMELEAF_ENV_DATA_REF + "string";
@@ -46,12 +48,17 @@ public class ThymeleafPropertiesUtils {
 	private static final String THYMELEAF_ENV_TEMPLATE_MODEL_ATTRS = ".model.attrs";
 
 	private static final String THYMELEAF_TEMPLATE_MAIN = "main";
+	private static final String THYMELEAF_TEMPLATE_HEADER_JS_ONLY = "header.js.only";
 
 	@Autowired
 	private Environment env;
 
 	public ThymeleafTemplateVO getMainTemplate() {
 		return getTemplateVO(THYMELEAF_TEMPLATE_MAIN);
+	}
+
+	public ThymeleafTemplateVO getTemplateHeaderJsOnly() {
+		return getTemplateVO(THYMELEAF_TEMPLATE_HEADER_JS_ONLY);
 	}
 
 	public ThymeleafFragmentVO getHeaderFragment() {
@@ -115,7 +122,7 @@ public class ThymeleafPropertiesUtils {
 		return templateVO;
 	}
 
-	private HashMap<String, ThymeleafParamAttributeVO> getThymeleafParamAttributeVO(
+	public HashMap<String, ThymeleafParamAttributeVO> getThymeleafParamAttributeVO(
 			HashMap<String, ThymeleafParamAttributeVO> params, String paramString, @NonNull final boolean isTemplate) {
 		if (StringUtils.isBlank(paramString)) {
 			return params;

@@ -34,6 +34,18 @@ public class ThymeleafFragmentVO {
 		this.params = params;
 	}
 
+	public ThymeleafFragmentVO(String id, String path, String thPath, String thId,
+			HashMap<String, ThymeleafParamAttributeVO> params) {
+		this.path = path;
+		this.id = id;
+		this.thPath = thPath;
+		this.thId = thId;
+		if (params == null) {
+			params = new HashMap<>();
+		}
+		this.params = params;
+	}
+
 	public String getThPath() {
 		return thPath;
 	}

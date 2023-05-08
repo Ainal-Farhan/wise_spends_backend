@@ -1,5 +1,6 @@
 package com.ainal.apps.wise_spends.common.domain.mny;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,9 @@ public class MoneyStorage extends BaseEntity {
 
 	@Column(name = "TYPE")
 	private String type;
+
+	@Column(name = "TOTAL_AMOUNT")
+	private BigDecimal totalAmount;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
 	@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_MMS_MNY_USER_ID"))

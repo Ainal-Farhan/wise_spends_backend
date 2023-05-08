@@ -6,11 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.ainal.apps.wise_spends.manager.IThymeleafManager;
 import com.ainal.apps.wise_spends.security.auth.AuthenticationRequest;
 import com.ainal.apps.wise_spends.security.auth.AuthenticationResponse;
 import com.ainal.apps.wise_spends.security.auth.AuthenticationService;
+import com.ainal.apps.wise_spends.thymeleaf.vo.ThymeleafFragmentVO;
 import com.ainal.apps.wise_spends.util.properties.WiseSpendsPropertiesUtils;
 import com.ainal.apps.wise_spends.view.form.login.LoginForm;
 
@@ -24,14 +27,23 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping({ "/login" })
 public class LoginViewController {
 	@Autowired
+	IThymeleafManager thymeleafManager;
+
+	@Autowired
 	private AuthenticationService authenticationService;
 
 	@Autowired
 	private WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
 
 	@GetMapping(path = { "/auth" })
-	String getLoginView() {
-		return "/public/login";
+	public ModelAndView getLoginView() {
+		ModelAndView modelAndView = thymeleafManager
+				.getTemplateHeaderJsOnlyModelAndView(new ThymeleafFragmentVO("content", "/public/login"), "Login");
+		modelAndView.addObject("flagSidebar", "false");
+		modelAndView.addObject("flagTopbar", "false");
+		modelAndView.addObject("flagFooter", "false");
+		modelAndView.addObject("flagScrollTopButton", "false");
+		return modelAndView;
 	}
 
 	@PostMapping(path = "/auth")
