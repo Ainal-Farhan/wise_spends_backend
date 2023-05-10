@@ -52,6 +52,9 @@ public class MoneyStorage extends BaseEntity {
 	@OneToMany(mappedBy = "moneyStorage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Saving> savingList = new ArrayList<>();
 
+	@OneToMany(mappedBy = "moneyStorage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<CreditCard> creditCardList = new ArrayList<>();
+
 	@Override
 	public Long getId() {
 		return id;
@@ -100,6 +103,22 @@ public class MoneyStorage extends BaseEntity {
 
 	public void setSavingList(List<Saving> savingList) {
 		this.savingList = savingList;
+	}
+
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public List<CreditCard> getCreditCardList() {
+		return creditCardList;
+	}
+
+	public void setCreditCardList(List<CreditCard> creditCardList) {
+		this.creditCardList = creditCardList;
 	}
 
 }
