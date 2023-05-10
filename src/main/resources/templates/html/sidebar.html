@@ -19,6 +19,30 @@
 			<!-- Divider -->
 			<hr class="sidebar-divider d-none d-md-block">
 
+			<!-- Heading -->
+			<div class="sidebar-heading">Money</div>
+
+			<!-- Nav Item - Pages Collapse Menu -->
+			<li
+				th:class="${active == 'moneyStorageList' || active == 'addMoneyStorage'? 'nav-item active' : 'nav-item'}"><a
+				class="nav-link collapsed" href="#" data-toggle="collapse"
+				data-target="#collapseTwo" aria-expanded="true"
+				aria-controls="collapseTwo"> <i class="fas fa-fw fa-archive"></i>
+					<span>Money Storages</span>
+			</a>
+				<div id="collapseTwo"
+					th:class="${active == 'moneyStorageList' || active == 'addMoneyStorage'? 'collapse show' : 'collapse'}"
+					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">Money Storage:</h6>
+						<a
+							th:class="${active == 'moneyStorageList'? 'collapse-item active' : 'collapse-item'}"
+							href="/money_storage">List of Money Storage</a> <a
+							th:class="${active == 'addMoneyStorage'? 'collapse-item active' : 'collapse-item'}"
+							href="/money_storage/add">Money Storage Form</a>
+					</div>
+				</div></li>
+
 			<!-- Sidebar Toggler (Sidebar) -->
 			<div class="text-center d-none d-md-inline">
 				<button class="rounded-circle border-0" id="sidebarToggle"></button>

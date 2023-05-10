@@ -12,8 +12,12 @@ public interface IUserManager {
 	Collection<? extends GrantedAuthority> getUserAuthorities(User user);
 
 	Collection<? extends GrantedAuthority> getUserAuthorities(Long userId);
-	
+
 	List<User> findUserListByEmail(String email);
-	
+
+	User findUserByEmail(String email);
+
+	User findUserByUsername(String username);
+
 	Individual findByUser(User user);
 }

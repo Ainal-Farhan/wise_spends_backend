@@ -28,7 +28,7 @@ public class UserJwtViewObjectService implements IUserJwtViewObjectService {
 		List<Credential> credentialList = credentialManager.findCredentialByUsernameOrEmail(usernameOrEmail);
 		UserJwtViewObject userJwtViewObject = null;
 
-  		if (!CollectionUtils.isEmpty(credentialList)) {
+		if (!CollectionUtils.isEmpty(credentialList)) {
 			Credential credential = credentialList.get(0);
 			User user = credential.getUser();
 			if (user != null) {
@@ -45,6 +45,7 @@ public class UserJwtViewObjectService implements IUserJwtViewObjectService {
 				userJwtViewObject.setGrantedAuthorities(userManager.getUserAuthorities(user));
 
 				userJwtViewObject.setName(individual.getNickName());
+				userJwtViewObject.setFlagUsernameIsEmail(credential.getFlagUsernameIsEmail());
 			}
 		}
 

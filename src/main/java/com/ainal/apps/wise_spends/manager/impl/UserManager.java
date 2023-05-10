@@ -86,4 +86,15 @@ public class UserManager implements IUserManager {
 		return individualService.findIndividualByUser(user);
 	}
 
+	@Override
+	public User findUserByEmail(String email) {
+		List<User> userList = findUserListByEmail(email);
+		return CollectionUtils.isEmpty(userList) ? null : userList.get(0);
+	}
+
+	@Override
+	public User findUserByUsername(String username) {
+		return userService.findByUserByUsername(username);
+	}
+
 }

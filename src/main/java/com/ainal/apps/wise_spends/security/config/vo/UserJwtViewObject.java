@@ -7,11 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class UserJwtViewObject implements UserDetails {
 	private static final long serialVersionUID = 1L;
-	
+
 	private String usernameOrEmail;
 	private String name;
 	private String password;
 	private Collection<? extends GrantedAuthority> grantedAuthorities;
+	private Boolean flagUsernameIsEmail;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -42,7 +43,7 @@ public class UserJwtViewObject implements UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 	public String getPassword() {
 		return password;
 	}
@@ -73,5 +74,13 @@ public class UserJwtViewObject implements UserDetails {
 
 	public void setGrantedAuthorities(Collection<? extends GrantedAuthority> grantedAuthorities) {
 		this.grantedAuthorities = grantedAuthorities;
+	}
+
+	public Boolean getFlagUsernameIsEmail() {
+		return flagUsernameIsEmail;
+	}
+
+	public void setFlagUsernameIsEmail(Boolean flagUsernameIsEmail) {
+		this.flagUsernameIsEmail = flagUsernameIsEmail;
 	}
 }

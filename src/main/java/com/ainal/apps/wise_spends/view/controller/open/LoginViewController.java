@@ -46,25 +46,30 @@ public class LoginViewController {
 		return modelAndView;
 	}
 
-	@PostMapping(path = "/auth")
+	@PostMapping(path = "/auth/go")
 	public RedirectView login(@ModelAttribute(name = "loginForm") LoginForm loginForm,
 			@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
-		AuthenticationRequest authenticationRequest = new AuthenticationRequest();
-		authenticationRequest.setUsernameOrEmail(loginForm.getUsername());
-		authenticationRequest.setPassword(loginForm.getPassword());
-		AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequest);
+		try {
 
-		if (StringUtils.isBlank(authenticationResponse.getToken())) {
+			AuthenticationRequest authenticationRequest = new AuthenticationRequest();
+			authenticationRequest.setUsernameOrEmail(loginForm.getUsername());
+			authenticationRequest.setPassword(loginForm.getPassword());
+			AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticationRequest);
+
+			if (StringUtils.isBlank(authenticationResponse.getToken())) {
+				return new RedirectView("/login/auth");
+			}
+
+			Cookie tokenCookie = new Cookie(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME(),
+					authenticationResponse.getToken());
+			tokenCookie.setHttpOnly(true);
+			tokenCookie.setDomain(wiseSpendsPropertiesUtils.WS_DOMAIN());
+			tokenCookie.setPath("/");
+			response.addCookie(tokenCookie);
+
+			return new RedirectView("/");
+		} catch (Exception e) {
 			return new RedirectView("/login/auth");
 		}
-
-		Cookie tokenCookie = new Cookie(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME(),
-				authenticationResponse.getToken());
-		tokenCookie.setHttpOnly(true);
-		tokenCookie.setDomain(wiseSpendsPropertiesUtils.WS_DOMAIN());
-		tokenCookie.setPath("/");
-		response.addCookie(tokenCookie);
-
-		return new RedirectView("/");
 	}
 }
