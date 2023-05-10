@@ -9,6 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.ainal.apps.wise_spends.util.properties.WiseSpendsPropertiesUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final AuthenticationProvider authenticationProvider;
+	private final WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,9 +37,24 @@ public class SecurityConfiguration {
 						.requestMatchers("/img/**").permitAll().requestMatchers("/js/**").permitAll()
 						.requestMatchers("/scss/**").permitAll().requestMatchers("/vendor/**").permitAll().anyRequest()
 						.authenticated())
+				.formLogin(formLogin -> formLogin.loginPage("/login/auth").permitAll())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authenticationProvider(authenticationProvider)
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+						.logoutSuccessHandler(logoutSuccessHandler()).addLogoutHandler(logoutHandler())
+						.invalidateHttpSession(true)
+						.deleteCookies(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME()).permitAll());
 		return http.build();
+	}
+
+	@Bean
+	LogoutSuccessHandler logoutSuccessHandler() {
+		return new SimpleUrlLogoutSuccessHandler();
+	}
+
+	@Bean
+	LogoutHandler logoutHandler() {
+		return new SecurityContextLogoutHandler();
 	}
 }

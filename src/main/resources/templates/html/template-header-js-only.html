@@ -4,7 +4,7 @@
 <head th:replace="~{${headerPathThFragment} :: ${headerThFragment}}">
 </head>
 
-<body class="bg-gradient-primary">
+<body th:class="${bodyClass}">
 	<!-- Begin Page Content -->
 	<div th:replace="~{${contentPathThFragment} :: ${contentThFragment}}"></div>
 	<!-- /.container-fluid -->

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ainal.apps.wise_spends.manager.ICurrentUserManager;
 import com.ainal.apps.wise_spends.manager.IThymeleafManager;
 import com.ainal.apps.wise_spends.thymeleaf.vo.ThymeleafFragmentVO;
 
@@ -16,6 +17,10 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ErrorViewController implements ErrorController {
+
+	@Autowired
+	private ICurrentUserManager currentUserManager;
+
 	@Autowired
 	IThymeleafManager thymeleafManager;
 
@@ -41,8 +46,20 @@ public class ErrorViewController implements ErrorController {
 				errorPage += "/500";
 
 			}
-			return thymeleafManager.getMainTemplateModelAndView(new ThymeleafFragmentVO("content", errorPage),
-					errorPage);
+
+			if (currentUserManager.getCurrentUser(request) != null) {
+				ModelAndView modelAndView = thymeleafManager
+						.getMainTemplateModelAndView(new ThymeleafFragmentVO("content", errorPage), errorPage);
+				modelAndView.addObject("flagLogin", true);
+				return modelAndView;
+			}
+
+			ModelAndView modelAndView = thymeleafManager
+					.getTemplateHeaderJsOnlyModelAndView(new ThymeleafFragmentVO("content", errorPage), errorPage);
+			modelAndView.addObject("bodyClass", "");
+			modelAndView.addObject("flagLogin", false);
+
+			return modelAndView;
 		}
 
 		return new ModelAndView(errorPage);
