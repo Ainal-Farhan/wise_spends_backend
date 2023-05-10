@@ -7,7 +7,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -44,8 +46,15 @@ public class SecurityConfiguration {
 				.logout(logout -> logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 						.logoutSuccessHandler(logoutSuccessHandler()).addLogoutHandler(logoutHandler())
 						.invalidateHttpSession(true)
-						.deleteCookies(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME()).permitAll());
+						.deleteCookies(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME()).permitAll())
+				.exceptionHandling(
+						exceptionHandling -> exceptionHandling.authenticationEntryPoint(authenticationEntryPoint()));
 		return http.build();
+	}
+
+	@Bean
+	AuthenticationEntryPoint authenticationEntryPoint() {
+		return new LoginUrlAuthenticationEntryPoint("/login/auth");
 	}
 
 	@Bean
