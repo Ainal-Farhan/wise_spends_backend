@@ -16,6 +16,7 @@ import io.micrometer.common.lang.NonNull;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Component
 public class CurrentUserManager implements ICurrentUserManager {
@@ -89,6 +90,31 @@ public class CurrentUserManager implements ICurrentUserManager {
 		}
 
 		return this.userJwtViewObjectService.loadUserJwtViewObjectByUsernameOrEmail(usernameOrEmail).orElse(null);
+	}
+
+	@Override
+	public void removeToken(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response) {
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME())) {
+					cookie.setMaxAge(0);
+					cookie.setPath("/");
+					cookie.setDomain(wiseSpendsPropertiesUtils.WS_DOMAIN());
+					response.addCookie(cookie);
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void setToken(@NonNull HttpServletResponse response, @NonNull String token) {
+		Cookie tokenCookie = new Cookie(wiseSpendsPropertiesUtils.JWT_COOKIE_ACCESS_TOKEN_NAME(), token);
+		tokenCookie.setHttpOnly(true);
+		tokenCookie.setDomain(wiseSpendsPropertiesUtils.WS_DOMAIN());
+		tokenCookie.setPath("/");
+		response.addCookie(tokenCookie);
 	}
 
 }
