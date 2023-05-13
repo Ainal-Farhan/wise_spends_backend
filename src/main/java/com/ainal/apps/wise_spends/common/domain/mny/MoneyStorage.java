@@ -4,13 +4,18 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
+
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
 import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
+import com.ainal.apps.wise_spends.common.reference.MoneyStorageTypeEnum;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -18,12 +23,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = TablePrefixConstant.MNY_TABLE_PREFIX + "MONEY_STORAGE")
+@NamedEntityGraph(name = "MoneyStorage.detail", attributeNodes = { @NamedAttributeNode("savingList"),
+		@NamedAttributeNode("creditCardList"), })
 public class MoneyStorage extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
@@ -40,7 +49,8 @@ public class MoneyStorage extends BaseEntity {
 	private String abbreviation;
 
 	@Column(name = "TYPE")
-	private String type;
+	@Enumerated(EnumType.STRING)
+	private MoneyStorageTypeEnum type;
 
 	@Column(name = "TOTAL_AMOUNT")
 	private BigDecimal totalAmount;
@@ -54,6 +64,18 @@ public class MoneyStorage extends BaseEntity {
 
 	@OneToMany(mappedBy = "moneyStorage", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<CreditCard> creditCardList = new ArrayList<>();
+	
+	// Method to fetch savingList separately when needed
+	public List<Saving> fetchSavingList() {
+		Hibernate.initialize(savingList);
+		return savingList;
+	}
+
+	// Method to fetch creditCardList separately when needed
+	public List<CreditCard> fetchCreditCardList() {
+		Hibernate.initialize(creditCardList);
+		return creditCardList;
+	}
 
 	@Override
 	public Long getId() {
@@ -81,11 +103,11 @@ public class MoneyStorage extends BaseEntity {
 		this.abbreviation = abbreviation;
 	}
 
-	public String getType() {
+	public MoneyStorageTypeEnum getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(MoneyStorageTypeEnum type) {
 		this.type = type;
 	}
 

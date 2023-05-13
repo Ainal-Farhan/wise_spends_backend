@@ -5,9 +5,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
+import com.ainal.apps.wise_spends.common.reference.MoneyStorageTypeEnum;
+import com.ainal.apps.wise_spends.form.view.object.MoneyStorageFormVO;
 import com.ainal.apps.wise_spends.manager.IMoneyStorageManager;
 import com.ainal.apps.wise_spends.manager.IThymeleafManager;
 import com.ainal.apps.wise_spends.thymeleaf.vo.ThymeleafFragmentVO;
@@ -33,7 +38,7 @@ public class MoneyStorageViewController {
 
 		List<MoneyStorageVO> moneyStorageVOList = moneyStorageManager.populateMoneyStorageVOList(request);
 
-		modelAndView.addObject("moneyStorageList", moneyStorageVOList);
+		modelAndView.addObject("moneyStorageVOList", moneyStorageVOList);
 		modelAndView.addObject("active", "moneyStorageList");
 
 		return modelAndView;
@@ -45,6 +50,29 @@ public class MoneyStorageViewController {
 		ModelAndView modelAndView = thymeleafManager.getMainTemplateModelAndView(content, "Money Storage");
 
 		modelAndView.addObject("active", "addMoneyStorage");
+		modelAndView.addObject("moneyStorageFormVO", new MoneyStorageFormVO());
+		modelAndView.addObject("types", MoneyStorageTypeEnum.values());
+
+		return modelAndView;
+	}
+
+	@GetMapping(path = { "/edit/{moneyStorageId}" })
+	public ModelAndView getViewEditMoneyStoragePage(@PathVariable("moneyStorageId") Long moneyStorageId,
+			@NonNull HttpServletRequest request) {
+		ThymeleafFragmentVO content = new ThymeleafFragmentVO("content", "/private/view/money_storage/addMoneyStorage");
+		ModelAndView modelAndView = thymeleafManager.getMainTemplateModelAndView(content, "Money Storage");
+
+		MoneyStorage moneyStorage = moneyStorageManager.getMoneyStorageById(moneyStorageId);
+
+		if (moneyStorage == null) {
+			RedirectView redirectView = new RedirectView("/money_storage/add", true);
+			redirectView.addStaticAttribute("requestType", "GET");
+			return new ModelAndView(redirectView);
+		}
+
+		modelAndView.addObject("active", "addMoneyStorage");
+		modelAndView.addObject("moneyStorageFormVO", new MoneyStorageFormVO(moneyStorage));
+		modelAndView.addObject("types", MoneyStorageTypeEnum.values());
 
 		return modelAndView;
 	}

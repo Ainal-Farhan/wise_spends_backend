@@ -1,5 +1,6 @@
 package com.ainal.apps.wise_spends.manager.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Component;
 
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
+import com.ainal.apps.wise_spends.common.reference.MoneyStorageTypeEnum;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyStorageService;
+import com.ainal.apps.wise_spends.form.view.object.MoneyStorageFormVO;
+import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.manager.ICurrentUserManager;
 import com.ainal.apps.wise_spends.manager.IMoneyStorageManager;
 import com.ainal.apps.wise_spends.view.object.MoneyStorageVO;
@@ -20,10 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 @Component
 public class MoneyStorageManager implements IMoneyStorageManager {
 	@Autowired
-	ICurrentUserManager currentUserManager;
+	private ICurrentUserManager currentUserManager;
 
 	@Autowired
-	IMoneyStorageService moneyStorageService;
+	private IMoneyStorageService moneyStorageService;
+
+	@Autowired
+	private IBaseManager baseManager;
 
 	@Override
 	public List<MoneyStorageVO> populateMoneyStorageVOList(@NonNull HttpServletRequest request) {
@@ -36,11 +43,58 @@ public class MoneyStorageManager implements IMoneyStorageManager {
 
 		List<MoneyStorageVO> moneyStorageVOList = new ArrayList<>();
 		for (MoneyStorage moneyStorage : moneyStorageList) {
-			final MoneyStorageVO moneyStorageVO = new MoneyStorageVO();
-			moneyStorageVO.setName(moneyStorage.getFullName());
-			moneyStorage.setTotalAmount(moneyStorage.getTotalAmount());
+			moneyStorageVOList.add(new MoneyStorageVO(moneyStorage));
 		}
 		return moneyStorageVOList;
+	}
+
+	@Override
+	public MoneyStorage addNewMoneyStorageForCurrentUser(@NonNull HttpServletRequest request,
+			MoneyStorageFormVO moneyStorageFormVO) {
+		if (moneyStorageFormVO == null) {
+			return null;
+		}
+
+		User currentUser = currentUserManager.getCurrentUser(request);
+		MoneyStorage moneyStorage = new MoneyStorage();
+		setMoneyStorageData(moneyStorageFormVO, moneyStorage);
+		moneyStorage.setUser(currentUser);
+		baseManager.setBaseEntityAttributes(moneyStorage, request);
+
+		moneyStorage = moneyStorageService.saveNewMoneyStorage(moneyStorage);
+
+		return moneyStorage;
+	}
+
+	@Override
+	public boolean deleteMoneyStorage(@NonNull Long moneyStorageId) {
+		moneyStorageService.deleteMoneyStorage(moneyStorageId);
+		return true;
+	}
+
+	@Override
+	public MoneyStorage updateMoneyStorageForCurrentUser(HttpServletRequest request,
+			MoneyStorageFormVO moneyStorageFormVO) {
+		MoneyStorage moneyStorage = getMoneyStorageById(moneyStorageFormVO.getId());
+		setMoneyStorageData(moneyStorageFormVO, moneyStorage);
+		baseManager.setBaseEntityAttributes(moneyStorage, request);
+		moneyStorage = moneyStorageService.saveNewMoneyStorage(moneyStorage);
+
+		return moneyStorage;
+	}
+
+	private void setMoneyStorageData(MoneyStorageFormVO moneyStorageFormVO, MoneyStorage moneyStorage) {
+		moneyStorage.setFullName(moneyStorageFormVO.getFullName());
+		moneyStorage.setAbbreviation(moneyStorageFormVO.getAbbreviation());
+		moneyStorage.setType(
+				moneyStorageFormVO.getType() == null ? MoneyStorageTypeEnum.SAVING : moneyStorageFormVO.getType());
+		moneyStorage.setTotalAmount(moneyStorageFormVO.getTotalAmount() == null ? BigDecimal.valueOf(0)
+				: moneyStorageFormVO.getTotalAmount());
+	}
+
+	@Override
+	public MoneyStorage getMoneyStorageById(Long moneyStorageId) {
+		return moneyStorageService.findMoneyStorageById(moneyStorageId);
 	}
 
 }
