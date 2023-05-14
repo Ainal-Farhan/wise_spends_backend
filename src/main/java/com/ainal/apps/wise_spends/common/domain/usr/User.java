@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
 import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
+import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
 import com.ainal.apps.wise_spends.common.domain.ref.MoneyTransactionCategoryReference;
 import com.ainal.apps.wise_spends.common.domain.userType.YesNoUserType;
 
@@ -56,6 +57,9 @@ public class User extends BaseEntity {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<MoneyTransactionCategoryReference> moneyTransactionCategoryReferenceList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<MoneyTransaction> moneyTransactionList = new ArrayList<>();
 
 	@Override
 	public Long getId() {
@@ -114,6 +118,14 @@ public class User extends BaseEntity {
 	public void setMoneyTransactionCategoryReferenceList(
 			List<MoneyTransactionCategoryReference> moneyTransactionCategoryReferenceList) {
 		this.moneyTransactionCategoryReferenceList = moneyTransactionCategoryReferenceList;
+	}
+
+	public List<MoneyTransaction> getMoneyTransactionList() {
+		return moneyTransactionList;
+	}
+
+	public void setMoneyTransactionList(List<MoneyTransaction> moneyTransactionList) {
+		this.moneyTransactionList = moneyTransactionList;
 	}
 
 }

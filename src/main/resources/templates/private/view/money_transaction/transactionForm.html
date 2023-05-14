@@ -8,8 +8,9 @@
 		<!-- Page Heading -->
 		<div class="d-sm-flex align-items-center justify-content-between mb-4">
 			<h1 class="h3 mb-0 text-gray-800">
-				<span th:text="${savingFormVO.id != null? 'Update' : 'Add'}"></span>
-				Reference Category
+				<span
+					th:text="${moneyTransactionFormVO.id != null? 'Update' : 'Add'}"></span>
+				Transaction Form
 			</h1>
 		</div>
 
@@ -23,15 +24,51 @@
 							<div class="col-lg-6">
 								<div class="p-5">
 									<div class="text-center">
-										<h1 class="h4 text-gray-900 mb-4">Reference Category Form</h1>
+										<h1 class="h4 text-gray-900 mb-4">Transaction Form</h1>
 									</div>
-									<form class="creditCardForm"
-										th:action="@{/api/money_transaction}"
-										th:object="${savingFormVO}" method="post">
+									<form class="creditCardForm" th:action="@{/api/transaction}"
+										th:object="${moneyTransactionFormVO}" method="post">
+										<input type="hidden" th:field="*{id}">
+
+										<div class="form-group">
+											<input type="date" class="form-control"
+												th:field="*{transactionDate}">
+										</div>
+
+										<div class="form-group">
+											<input type="text" class="form-control" value='0.00'
+												placeholder='0.00' th:field="*{amount}">
+										</div>
+
+										<div class="form-group">
+											<label>Reference:</label> <select
+												th:field="*{moneyTransactionReferenceId}"
+												class="form-control">
+												<option th:each="referenceVO : ${referenceVOList}"
+													th:value="${referenceVO.id}" th:text="${referenceVO.title}"></option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label>Type:</label> <select th:field="*{type}"
+												class="form-control">
+												<option th:each="type : ${types}" th:value="${type}"
+													th:text="${type.name()}"></option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label>From:</label> <select th:field="*{from}"
+												class="form-control">
+												<option th:each="fromIdSelectItem : ${fromIdSelectItemList}"
+													th:value="${fromIdSelectItem}"
+													th:text="${fromIdSelectItem.title}"></option>
+											</select>
+										</div>
 
 										<input type="submit"
 											class="btn btn-primary btn-user btn-block"
-											th:value="${savingFormVO.id != null? 'Update' : 'Add'}">
+											th:value="${moneyTransactionFormVO.id != null? 'Update' : 'Add'}">
 									</form>
 								</div>
 							</div>
