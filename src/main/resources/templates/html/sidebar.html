@@ -123,7 +123,7 @@
 
 			<!-- Transaction References -->
 			<li
-				th:class="${active == 'transactionReferenceList' || active == 'addTransactionReference' || active == 'addTransactionCategoryReference'? 'nav-item active' : 'nav-item'}"><a
+				th:class="${active == 'transactionReferenceList' || active == 'addTransactionReference' || active == 'transactionCategoryReferenceList'  || active == 'addTransactionCategoryReference'? 'nav-item active' : 'nav-item'}"><a
 				class="nav-link collapsed" href="#" data-toggle="collapse"
 				data-target="#transactionReferenceSidebar" aria-expanded="true"
 				aria-controls="transactionReferenceSidebar"> <i
@@ -131,15 +131,17 @@
 						Reference</span>
 			</a>
 				<div id="transactionReferenceSidebar"
-					th:class="${active == 'transactionReferenceList' || active == 'addTransactionReference' || active == 'addTransactionCategoryReference'? 'collapse show' : 'collapse'}"
+					th:class="${active == 'transactionReferenceList' || active == 'addTransactionReference' || active == 'transactionCategoryReferenceList' || active == 'addTransactionCategoryReference'? 'collapse show' : 'collapse'}"
 					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
 						<h6 class="collapse-header">Transaction Reference:</h6>
 						<a
+							th:class="${active == 'transactionCategoryReferenceList'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction_category_reference">List of Category</a><a
+							th:class="${active == 'addTransactionCategoryReference'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction_category_reference/add">Category Form</a> <a
 							th:class="${active == 'transactionReferenceList'? 'collapse-item active' : 'collapse-item'}"
 							href="/transaction_reference">List of References</a> <a
-							th:class="${active == 'addTransactionCategoryReference'? 'collapse-item active' : 'collapse-item'}"
-							href="/transaction_reference/add-category">Category Form</a> <a
 							th:class="${active == 'addTransactionReference'? 'collapse-item active' : 'collapse-item'}"
 							href="/transaction_reference/add">Reference Form</a>
 					</div>

@@ -70,7 +70,7 @@ public class CreditCardViewController {
 		CreditCard creditCard = creditCardManager.getCreditCardById(creditCardId);
 
 		if (creditCard == null) {
-			RedirectView redirectView = new RedirectView("/money_storage/add", true);
+			RedirectView redirectView = new RedirectView("/credit_card/add", true);
 			redirectView.addStaticAttribute("requestType", "GET");
 			return new ModelAndView(redirectView);
 		}
