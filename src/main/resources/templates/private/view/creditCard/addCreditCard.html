@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<!-- Begin Page Content -->
+	<div th:fragment="content" class="container-fluid">
+
+		<!-- Page Heading -->
+		<div class="d-sm-flex align-items-center justify-content-between mb-4">
+			<h1 class="h3 mb-0 text-gray-800">
+				<span th:text="${creditCardFormVO.id != null? 'Update' : 'Add'}"></span>
+				Credit Card
+			</h1>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-xl-10 col-lg-12 col-md-9">
+				<div class="card o-hidden border-0 shadow-lg my-5">
+					<div class="card-body p-0">
+						<!-- Nested Row within Card Body -->
+						<div class="row">
+							<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+							<div class="col-lg-6">
+								<div class="p-5">
+									<div class="text-center">
+										<h1 class="h4 text-gray-900 mb-4">Credit Card Form</h1>
+									</div>
+									<form class="creditCardForm" th:action="@{/api/credit_card}"
+										th:object="${creditCardFormVO}" method="post">
+										<input type="hidden" th:field="*{id}">
+
+										<div class="form-group">
+											<input type="text" class="form-control"
+												placeholder="Short Name" th:field="*{shortName}">
+										</div>
+
+										<div class="form-group">
+											<input type="text" class="form-control"
+												placeholder="Full Name" th:field="*{fullName}">
+										</div>
+
+										<div class="form-group">
+											<input type="text" class="form-control"
+												placeholder="Abbreviation" th:field="*{abbreviation}">
+										</div>
+
+										<div class="form-group">
+											<input type="text" class="form-control" value='0.00'
+												placeholder='0.00' th:field="*{creditAmount}">
+										</div>
+
+										<div class="form-group">
+											<label>Money Storage:</label> <select
+												th:field="*{moneyStorageId}" class="form-control">
+												<option th:each="moneyStorage : ${moneyStorageVOList}"
+													th:value="${moneyStorage.id}"
+													th:text="${moneyStorage.abbreviation + ' - ' + moneyStorage.name}"></option>
+											</select>
+										</div>
+
+										<input type="submit"
+											class="btn btn-primary btn-user btn-block"
+											th:value="${creditCardFormVO.id != null? 'Update' : 'Add'}">
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- /.container-fluid -->
+</body>
+
+</html>

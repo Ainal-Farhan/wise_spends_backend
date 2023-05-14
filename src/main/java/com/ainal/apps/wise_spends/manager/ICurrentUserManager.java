@@ -17,4 +17,8 @@ public interface ICurrentUserManager {
 	void setToken(@NonNull HttpServletResponse response, @NonNull String token);
 
 	UserJwtViewObject getUserJwtViewObject(@NonNull HttpServletRequest request);
+
+	String getCurrentUserEmailOrUsername(User currentUser);
+
+	String getCurrentUserEmailOrUsername(@NonNull HttpServletRequest request);
 }

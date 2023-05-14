@@ -18,6 +18,7 @@ public class MoneyStorageVO implements IVO {
 	private String name;
 	private BigDecimal unallocatedAmount;
 	private BigDecimal totalAmount;
+	private String abbreviation;
 
 	public MoneyStorageVO() {
 	}
@@ -28,6 +29,8 @@ public class MoneyStorageVO implements IVO {
 			this.name = moneyStorage.getFullName();
 			this.totalAmount = (moneyStorage.getTotalAmount() == null ? BigDecimal.valueOf(0)
 					: moneyStorage.getTotalAmount()).setScale(2, RoundingMode.HALF_UP);
+			this.abbreviation = moneyStorage.getAbbreviation();
+
 			BigDecimal unallocatedAmount = this.totalAmount;
 
 			if (!CollectionUtils.isEmpty(moneyStorage.getCreditCardList())) {
@@ -99,6 +102,14 @@ public class MoneyStorageVO implements IVO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getAbbreviation() {
+		return abbreviation;
+	}
+
+	public void setAbbreviation(String abbreviation) {
+		this.abbreviation = abbreviation;
 	}
 
 }

@@ -10,35 +10,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ainal.apps.wise_spends.form.view.object.MoneyStorageFormVO;
-import com.ainal.apps.wise_spends.manager.IMoneyStorageManager;
+import com.ainal.apps.wise_spends.form.view.object.SavingFormVO;
+import com.ainal.apps.wise_spends.manager.ISavingManager;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/money_storage")
-public class MoneyStorageRestController {
-
+@RequestMapping("/api/saving")
+public class SavingRestController {
 	@Autowired
-	private IMoneyStorageManager moneyStorageManager;
+	private ISavingManager savingManager;
 
 	@PostMapping("")
-	public RedirectView addMoneyStorage(
-			@ModelAttribute(name = "moneyStorageFormVO") MoneyStorageFormVO moneyStorageFormVO,
+	public RedirectView addSaving(@ModelAttribute(name = "savingFormVO") SavingFormVO savingFormVO,
 			@NonNull HttpServletRequest request) {
-		if (moneyStorageFormVO.getId() != null) {
-			moneyStorageManager.updateMoneyStorageForCurrentUser(request, moneyStorageFormVO);
+		if (savingFormVO.getId() != null) {
+			savingManager.updateSavingForCurrentUser(request, savingFormVO);
 		} else {
-			moneyStorageManager.addNewMoneyStorageForCurrentUser(request, moneyStorageFormVO);
+			savingManager.addNewSavingForCurrentUser(request, savingFormVO);
 		}
-		return new RedirectView("/money_storage");
+		return new RedirectView("/saving");
 	}
 
-	@DeleteMapping("/{moneyStorageId}")
-	public ResponseEntity<String> deleteMoneyStorage(@PathVariable("moneyStorageId") Long moneyStorageId) {
-		moneyStorageManager.deleteMoneyStorage(moneyStorageId);
+	@DeleteMapping("/{savingId}")
+	public ResponseEntity<String> deleteSaving(@PathVariable("savingId") Long savingId) {
+		savingManager.deleteSavingById(savingId);
 
 		return ResponseEntity.ok("Item deleted successfully");
 	}
+
 }

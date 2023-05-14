@@ -7,12 +7,16 @@ import org.springframework.stereotype.Component;
 
 import com.ainal.apps.wise_spends.common.domain.ref.UserRole;
 import com.ainal.apps.wise_spends.common.service.ref.IUserRoleService;
+import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.manager.IReferenceManager;
 
 @Component
 public class ReferenceManager implements IReferenceManager {
 	@Autowired
 	IUserRoleService userRoleService;
+
+	@Autowired
+	IBaseManager baseManager;
 
 	@Override
 	public void resetUserRoleRef() {
@@ -21,6 +25,7 @@ public class ReferenceManager implements IReferenceManager {
 			UserRole userRole = new UserRole();
 			userRole.setCode("N_USR");
 			userRole.setName("Normal User");
+			baseManager.setBaseEntityAttributes(userRole, "SYSTEM");
 			userRoleService.save(userRole);
 		}
 
@@ -28,6 +33,7 @@ public class ReferenceManager implements IReferenceManager {
 			UserRole userRole = new UserRole();
 			userRole.setCode("R_ADM");
 			userRole.setName("Admin");
+			baseManager.setBaseEntityAttributes(userRole, "SYSTEM");
 			userRoleService.save(userRole);
 		}
 	}

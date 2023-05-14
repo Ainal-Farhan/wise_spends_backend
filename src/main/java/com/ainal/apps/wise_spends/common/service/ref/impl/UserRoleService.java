@@ -9,7 +9,6 @@ import com.ainal.apps.wise_spends.common.domain.ref.UserRole;
 import com.ainal.apps.wise_spends.common.repository.ref.IUserRoleRepository;
 import com.ainal.apps.wise_spends.common.service.BaseService;
 import com.ainal.apps.wise_spends.common.service.ref.IUserRoleService;
-import com.ainal.apps.wise_spends.manager.IBaseManager;
 
 import jakarta.transaction.Transactional;
 
@@ -18,9 +17,6 @@ import jakarta.transaction.Transactional;
 public class UserRoleService extends BaseService implements IUserRoleService {
 	@Autowired
 	IUserRoleRepository userRoleRepository;
-
-	@Autowired
-	private IBaseManager baseManager;
 
 	@Override
 	public UserRole findUserRoleId(Long userRoleId) {
@@ -38,7 +34,6 @@ public class UserRoleService extends BaseService implements IUserRoleService {
 
 	@Override
 	public void save(UserRole userRole) {
-		baseManager.setBaseEntityAttributes(userRole, "System");
 		userRoleRepository.saveAndFlush(userRole);
 	}
 

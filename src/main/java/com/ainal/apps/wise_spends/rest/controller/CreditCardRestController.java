@@ -10,34 +10,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.ainal.apps.wise_spends.form.view.object.MoneyStorageFormVO;
-import com.ainal.apps.wise_spends.manager.IMoneyStorageManager;
+import com.ainal.apps.wise_spends.form.view.object.CreditCardFormVO;
+import com.ainal.apps.wise_spends.manager.ICreditCardManager;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/money_storage")
-public class MoneyStorageRestController {
-
+@RequestMapping("/api/credit_card")
+public class CreditCardRestController {
 	@Autowired
-	private IMoneyStorageManager moneyStorageManager;
+	private ICreditCardManager creditCardManager;
 
 	@PostMapping("")
-	public RedirectView addMoneyStorage(
-			@ModelAttribute(name = "moneyStorageFormVO") MoneyStorageFormVO moneyStorageFormVO,
+	public RedirectView addCreditCard(@ModelAttribute(name = "creditCardFormVO") CreditCardFormVO creditCardFormVO,
 			@NonNull HttpServletRequest request) {
-		if (moneyStorageFormVO.getId() != null) {
-			moneyStorageManager.updateMoneyStorageForCurrentUser(request, moneyStorageFormVO);
+		if (creditCardFormVO.getId() != null) {
+			creditCardManager.updateCreditCardForCurrentUser(request, creditCardFormVO);
 		} else {
-			moneyStorageManager.addNewMoneyStorageForCurrentUser(request, moneyStorageFormVO);
+			creditCardManager.addNewCreditCardForCurrentUser(request, creditCardFormVO);
 		}
-		return new RedirectView("/money_storage");
+		return new RedirectView("/credit_card");
 	}
 
-	@DeleteMapping("/{moneyStorageId}")
-	public ResponseEntity<String> deleteMoneyStorage(@PathVariable("moneyStorageId") Long moneyStorageId) {
-		moneyStorageManager.deleteMoneyStorage(moneyStorageId);
+	@DeleteMapping("/{creditCardId}")
+	public ResponseEntity<String> deleteCreditCard(@PathVariable("creditCardId") Long creditCardId) {
+		creditCardManager.deleteCreditCardById(creditCardId);
 
 		return ResponseEntity.ok("Item deleted successfully");
 	}

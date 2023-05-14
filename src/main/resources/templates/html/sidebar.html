@@ -23,14 +23,15 @@
 			<div class="sidebar-heading">Money</div>
 
 			<!-- Nav Item - Pages Collapse Menu -->
+			<!-- Money Storage -->
 			<li
 				th:class="${active == 'moneyStorageList' || active == 'addMoneyStorage'? 'nav-item active' : 'nav-item'}"><a
 				class="nav-link collapsed" href="#" data-toggle="collapse"
-				data-target="#collapseTwo" aria-expanded="true"
-				aria-controls="collapseTwo"> <i class="fas fa-fw fa-archive"></i>
-					<span>Money Storages</span>
+				data-target="#moneyStorageSidebar" aria-expanded="true"
+				aria-controls="moneyStorageSidebar"> <i
+					class="fas fa-fw fa-archive"></i> <span>Money Storages</span>
 			</a>
-				<div id="collapseTwo"
+				<div id="moneyStorageSidebar"
 					th:class="${active == 'moneyStorageList' || active == 'addMoneyStorage'? 'collapse show' : 'collapse'}"
 					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
 					<div class="bg-white py-2 collapse-inner rounded">
@@ -40,6 +41,48 @@
 							href="/money_storage">List of Money Storage</a> <a
 							th:class="${active == 'addMoneyStorage'? 'collapse-item active' : 'collapse-item'}"
 							href="/money_storage/add">Money Storage Form</a>
+					</div>
+				</div></li>
+
+			<!-- Credit Card -->
+			<li
+				th:class="${active == 'creditCardList' || active == 'addCreditCard'? 'nav-item active' : 'nav-item'}"><a
+				class="nav-link collapsed" href="#" data-toggle="collapse"
+				data-target="#creditCardSidebar" aria-expanded="true"
+				aria-controls="creditCardSidebar"> <i
+					class="fa-cc-mastercard"></i> <span>Credit Card</span>
+			</a>
+				<div id="creditCardSidebar"
+					th:class="${active == 'creditCardList' || active == 'addCreditCard'? 'collapse show' : 'collapse'}"
+					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">Credit Card:</h6>
+						<a
+							th:class="${active == 'creditCardList'? 'collapse-item active' : 'collapse-item'}"
+							href="/credit_card">List of Credit Card</a> <a
+							th:class="${active == 'addCreditCard'? 'collapse-item active' : 'collapse-item'}"
+							href="/credit_card/add">Credit Card Form</a>
+					</div>
+				</div></li>
+
+			<!-- Saving -->
+			<li
+				th:class="${active == 'savingList' || active == 'addSaving'? 'nav-item active' : 'nav-item'}"><a
+				class="nav-link collapsed" href="#" data-toggle="collapse"
+				data-target="#savingSidebar" aria-expanded="true"
+				aria-controls="savingSidebar"> <i class="fas fa-fw fa-archive"></i>
+					<span>Saving</span>
+			</a>
+				<div id="savingSidebar"
+					th:class="${active == 'savingList' || active == 'addSaving'? 'collapse show' : 'collapse'}"
+					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">Money Storage:</h6>
+						<a
+							th:class="${active == 'savingList'? 'collapse-item active' : 'collapse-item'}"
+							href="/saving">List of Saving</a> <a
+							th:class="${active == 'addSaving'? 'collapse-item active' : 'collapse-item'}"
+							href="/saving/add">Saving Form</a>
 					</div>
 				</div></li>
 

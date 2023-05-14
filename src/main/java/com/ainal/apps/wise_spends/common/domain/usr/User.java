@@ -3,8 +3,6 @@ package com.ainal.apps.wise_spends.common.domain.usr;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.annotations.LazyToOne;
-import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.Type;
 
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
@@ -45,14 +43,13 @@ public class User extends BaseEntity {
 	@JoinColumn(name = "CREDENTIAL_ID", unique = true, foreignKey = @ForeignKey(name = "FK_UU_USR_CRE_ID"))
 	private Credential credential;
 
-	@OneToOne(fetch = FetchType.LAZY)
-	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "INDIVIDUAL_ID", unique = true, foreignKey = @ForeignKey(name = "FK_UU_USR_IND_ID"))
 	private Individual individual;
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Role> roleList = new ArrayList<>();
-	
+
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<MoneyStorage> moneyStorageList = new ArrayList<>();
 

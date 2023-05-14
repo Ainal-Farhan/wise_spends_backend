@@ -83,6 +83,11 @@ public class MoneyStorageManager implements IMoneyStorageManager {
 		return moneyStorage;
 	}
 
+	@Override
+	public MoneyStorage getMoneyStorageById(Long moneyStorageId) {
+		return moneyStorageService.findMoneyStorageById(moneyStorageId);
+	}
+
 	private void setMoneyStorageData(MoneyStorageFormVO moneyStorageFormVO, MoneyStorage moneyStorage) {
 		moneyStorage.setFullName(moneyStorageFormVO.getFullName());
 		moneyStorage.setAbbreviation(moneyStorageFormVO.getAbbreviation());
@@ -90,11 +95,6 @@ public class MoneyStorageManager implements IMoneyStorageManager {
 				moneyStorageFormVO.getType() == null ? MoneyStorageTypeEnum.SAVING : moneyStorageFormVO.getType());
 		moneyStorage.setTotalAmount(moneyStorageFormVO.getTotalAmount() == null ? BigDecimal.valueOf(0)
 				: moneyStorageFormVO.getTotalAmount());
-	}
-
-	@Override
-	public MoneyStorage getMoneyStorageById(Long moneyStorageId) {
-		return moneyStorageService.findMoneyStorageById(moneyStorageId);
 	}
 
 }

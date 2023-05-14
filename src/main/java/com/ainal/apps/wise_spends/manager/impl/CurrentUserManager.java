@@ -117,4 +117,18 @@ public class CurrentUserManager implements ICurrentUserManager {
 		response.addCookie(tokenCookie);
 	}
 
+	@Override
+	public String getCurrentUserEmailOrUsername(User currentUser) {
+		return currentUser == null || currentUser.getCredential() == null || currentUser.getIndividual() == null
+				? Strings.EMPTY
+				: currentUser.getCredential().getFlagUsernameIsEmail() ? currentUser.getIndividual().getEmail()
+						: currentUser.getCredential().getUsername();
+	}
+
+	@Override
+	public String getCurrentUserEmailOrUsername(@NonNull HttpServletRequest request) {
+		User currentUser = getCurrentUser(request);
+		return getCurrentUserEmailOrUsername(currentUser);
+	}
+
 }

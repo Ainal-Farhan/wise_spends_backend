@@ -1,6 +1,7 @@
 package com.ainal.apps.wise_spends.form.view.object;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
 import com.ainal.apps.wise_spends.common.reference.MoneyStorageTypeEnum;
@@ -35,7 +36,8 @@ public class MoneyStorageFormVO implements IFormVO {
 			this.fullName = moneyStorage.getFullName();
 			this.abbreviation = moneyStorage.getAbbreviation();
 			this.type = moneyStorage.getType();
-			this.totalAmount = moneyStorage.getTotalAmount();
+			this.totalAmount = (moneyStorage.getTotalAmount() == null ? BigDecimal.valueOf(0)
+					: moneyStorage.getTotalAmount()).setScale(2, RoundingMode.HALF_UP);
 		}
 	}
 
