@@ -20,6 +20,34 @@
 			<hr class="sidebar-divider d-none d-md-block">
 
 			<!-- Heading -->
+			<div class="sidebar-heading">Transaction</div>
+
+			<!-- Nav Item - Pages Collapse Menu -->
+			<!-- Money Storage -->
+			<li
+				th:class="${active == 'transactionList' || active == 'makeTransaction'? 'nav-item active' : 'nav-item'}"><a
+				class="nav-link collapsed" href="#" data-toggle="collapse"
+				data-target="#transactioSidebar" aria-expanded="true"
+				aria-controls="transactioSidebar"> <i
+					class="fas fa-fw fa-archive"></i> <span>Transaction</span>
+			</a>
+				<div id="transactioSidebar"
+					th:class="${active == 'transactionList' || active == 'makeTransaction'? 'collapse show' : 'collapse'}"
+					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">Transaction:</h6>
+						<a
+							th:class="${active == 'transactionList'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction">List of Transaction</a> <a
+							th:class="${active == 'makeTransaction'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction/add">Make Transaction</a>
+					</div>
+				</div></li>
+
+			<!-- Divider -->
+			<hr class="sidebar-divider d-none d-md-block">
+
+			<!-- Heading -->
 			<div class="sidebar-heading">Money</div>
 
 			<!-- Nav Item - Pages Collapse Menu -->
@@ -49,8 +77,8 @@
 				th:class="${active == 'creditCardList' || active == 'addCreditCard'? 'nav-item active' : 'nav-item'}"><a
 				class="nav-link collapsed" href="#" data-toggle="collapse"
 				data-target="#creditCardSidebar" aria-expanded="true"
-				aria-controls="creditCardSidebar"> <i
-					class="fa-cc-mastercard"></i> <span>Credit Card</span>
+				aria-controls="creditCardSidebar"> <i class="fa-cc-mastercard"></i>
+					<span>Credit Card</span>
 			</a>
 				<div id="creditCardSidebar"
 					th:class="${active == 'creditCardList' || active == 'addCreditCard'? 'collapse show' : 'collapse'}"
@@ -83,6 +111,37 @@
 							href="/saving">List of Saving</a> <a
 							th:class="${active == 'addSaving'? 'collapse-item active' : 'collapse-item'}"
 							href="/saving/add">Saving Form</a>
+					</div>
+				</div></li>
+
+
+			<!-- Divider -->
+			<hr class="sidebar-divider d-none d-md-block">
+
+			<!-- Heading -->
+			<div class="sidebar-heading">References</div>
+
+			<!-- Transaction References -->
+			<li
+				th:class="${active == 'transactionReferenceList' || active == 'addTransactionReference' || active == 'addTransactionCategoryReference'? 'nav-item active' : 'nav-item'}"><a
+				class="nav-link collapsed" href="#" data-toggle="collapse"
+				data-target="#transactionReferenceSidebar" aria-expanded="true"
+				aria-controls="transactionReferenceSidebar"> <i
+					class="fas fa-fw fa-archive"></i> <span>Transaction
+						Reference</span>
+			</a>
+				<div id="transactionReferenceSidebar"
+					th:class="${active == 'transactionReferenceList' || active == 'addTransactionReference' || active == 'addTransactionCategoryReference'? 'collapse show' : 'collapse'}"
+					aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+					<div class="bg-white py-2 collapse-inner rounded">
+						<h6 class="collapse-header">Transaction Reference:</h6>
+						<a
+							th:class="${active == 'transactionReferenceList'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction_reference">List of References</a> <a
+							th:class="${active == 'addTransactionCategoryReference'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction_reference/add-category">Category Form</a> <a
+							th:class="${active == 'addTransactionReference'? 'collapse-item active' : 'collapse-item'}"
+							href="/transaction_reference/add">Reference Form</a>
 					</div>
 				</div></li>
 
