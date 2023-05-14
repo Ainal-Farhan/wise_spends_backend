@@ -18,14 +18,14 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = TablePrefixConstant.REF_TABLE_PREFIX + "TRANSACTION_CATEGORY_REFERENCE")
-public class TransactionCategoryReference extends BaseEntity {
+@Table(name = TablePrefixConstant.REF_TABLE_PREFIX + "MONEY_TRANSACTION_CATEGORY_REFERENCE")
+public class MoneyTransactionCategoryReference extends BaseEntity {
 	private static final long serialVersionUID = 8545024613827193474L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transactionCategoryReferenceSeq")
-	@SequenceGenerator(name = "transactionCategoryReferenceSeq", sequenceName = "SEQ_TRANSACTION_CATEGORY_REFERENCE", allocationSize = 1)
-	@Column(name = "TRANSACTION_CATEGORY_REFERENCE_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "moneyTransactionCategoryReferenceSeq")
+	@SequenceGenerator(name = "moneyTransactionCategoryReferenceSeq", sequenceName = "SEQ_MONEY_TRANSACTION_CATEGORY_REFERENCE", allocationSize = 1)
+	@Column(name = "MONEY_TRANSACTION_CATEGORY_REFERENCE_ID")
 	private Long id;
 
 	@Column(name = "TITLE", nullable = false, unique = true)
@@ -34,8 +34,8 @@ public class TransactionCategoryReference extends BaseEntity {
 	@Column(name = "DESCRIPTION")
 	private String description;
 
-	@OneToMany(mappedBy = "transactionCategoryReference", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<TransactionReference> transactionReferenceList = new ArrayList<>();
+	@OneToMany(mappedBy = "moneyTransactionCategoryReference", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<MoneyTransactionReference> moneyTransactionReferenceList = new ArrayList<>();
 
 	@Override
 	public Long getId() {
@@ -63,12 +63,12 @@ public class TransactionCategoryReference extends BaseEntity {
 		this.description = description;
 	}
 
-	public List<TransactionReference> getTransactionReferenceList() {
-		return transactionReferenceList;
+	public List<MoneyTransactionReference> getMoneyTransactionReferenceList() {
+		return moneyTransactionReferenceList;
 	}
 
-	public void setTransactionReferenceList(List<TransactionReference> transactionReferenceList) {
-		this.transactionReferenceList = transactionReferenceList;
+	public void setMoneyTransactionReferenceList(List<MoneyTransactionReference> moneyTransactionReferenceList) {
+		this.moneyTransactionReferenceList = moneyTransactionReferenceList;
 	}
 
 }

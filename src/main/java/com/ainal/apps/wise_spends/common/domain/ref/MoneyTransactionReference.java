@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
 import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
-import com.ainal.apps.wise_spends.common.domain.mny.Transaction;
+import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,14 +21,14 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = TablePrefixConstant.REF_TABLE_PREFIX + "TRANSACTION_REFERENCE")
-public class TransactionReference extends BaseEntity {
+@Table(name = TablePrefixConstant.REF_TABLE_PREFIX + "MONEY_TRANSACTION_REFERENCE")
+public class MoneyTransactionReference extends BaseEntity {
 	private static final long serialVersionUID = 3054605065392848908L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transactionReferenceSeq")
-	@SequenceGenerator(name = "transactionReferenceSeq", sequenceName = "SEQ_TRANSACTION_REFERENCE", allocationSize = 1)
-	@Column(name = "TRANSACTION_REFERENCE_ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "moneyTransactionReferenceSeq")
+	@SequenceGenerator(name = "moneyTransactionReferenceSeq", sequenceName = "SEQ_MONEY_TRANSACTION_REFERENCE", allocationSize = 1)
+	@Column(name = "MONEY_TRANSACTION_REFERENCE_ID")
 	private Long id;
 
 	@Column(name = "TITLE", nullable = false, unique = true)
@@ -40,12 +40,12 @@ public class TransactionReference extends BaseEntity {
 	@Column(name = "CODE", nullable = false, unique = true)
 	private String code;
 
-	@OneToMany(mappedBy = "transactionReference", fetch = FetchType.LAZY)
-	private List<Transaction> transactionList = new ArrayList<>();
+	@OneToMany(mappedBy = "moneyTransactionReference", fetch = FetchType.LAZY)
+	private List<MoneyTransaction> moneyTransactionList = new ArrayList<>();
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "TRANSACTION_CATEGORY_ID", foreignKey = @ForeignKey(name = "FK_RTR_REF_TCR_ID"), nullable = false)
-	private TransactionCategoryReference transactionCategoryReference;
+	@JoinColumn(name = "MONEY_TRANSACTION_CATEGORY_ID", foreignKey = @ForeignKey(name = "FK_RTR_REF_MTCR_ID"), nullable = false)
+	private MoneyTransactionCategoryReference moneyTransactionCategoryReference;
 
 	@Override
 	public Long getId() {
@@ -81,20 +81,21 @@ public class TransactionReference extends BaseEntity {
 		this.code = code;
 	}
 
-	public List<Transaction> getTransactionList() {
-		return transactionList;
+	public List<MoneyTransaction> getMoneyTransactionList() {
+		return moneyTransactionList;
 	}
 
-	public void setTransactionList(List<Transaction> transactionList) {
-		this.transactionList = transactionList;
+	public void setMoneyTransactionList(List<MoneyTransaction> moneyTransactionList) {
+		this.moneyTransactionList = moneyTransactionList;
 	}
 
-	public TransactionCategoryReference getTransactionCategoryReference() {
-		return transactionCategoryReference;
+	public MoneyTransactionCategoryReference getMoneyTransactionCategoryReference() {
+		return moneyTransactionCategoryReference;
 	}
 
-	public void setTransactionCategoryReference(TransactionCategoryReference transactionCategoryReference) {
-		this.transactionCategoryReference = transactionCategoryReference;
+	public void setMoneyTransactionCategoryReference(
+			MoneyTransactionCategoryReference moneyTransactionCategoryReference) {
+		this.moneyTransactionCategoryReference = moneyTransactionCategoryReference;
 	}
 
 }

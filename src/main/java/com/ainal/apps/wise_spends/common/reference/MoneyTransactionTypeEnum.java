@@ -1,5 +1,5 @@
 package com.ainal.apps.wise_spends.common.reference;
 
-public enum TransactionTypeEnum {
+public enum MoneyTransactionTypeEnum {
 	IN, OUT
 }

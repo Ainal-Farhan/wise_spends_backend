@@ -5,6 +5,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/transaction_reference")
-public class TransactionReferenceRestController {
+public class MoneyTransactionReferenceRestController {
 
 }
