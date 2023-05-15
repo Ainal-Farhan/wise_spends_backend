@@ -17,6 +17,7 @@ import com.ainal.apps.wise_spends.common.reference.MoneyStorageTypeEnum;
 import com.ainal.apps.wise_spends.common.service.mny.ICreditCardService;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyStorageService;
 import com.ainal.apps.wise_spends.common.service.mny.ISavingService;
+import com.ainal.apps.wise_spends.constant.MoneyTransactionConstant;
 import com.ainal.apps.wise_spends.form.view.object.MoneyStorageFormVO;
 import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.manager.ICurrentUserManager;
@@ -118,15 +119,16 @@ public class MoneyStorageManager implements IMoneyStorageManager {
 		List<SavingVO> savingVOList = populateSavingVOList(request);
 
 		List<SelectItemVO> selectItemVOList = moneyStorageVOList.stream()
-				.map(ms -> new SelectItemVO("Money Storage - " + ms.getName(), ms.getId()))
+				.map(ms -> new SelectItemVO(MoneyTransactionConstant.MONEY_STORAGE_PREFIX + ms.getName(), ms.getId()))
 				.collect(Collectors.toList());
 
-		selectItemVOList.addAll(
-				creditCardVOList.stream().map(cc -> new SelectItemVO("Credit Card - " + cc.getShortName(), cc.getId()))
-						.collect(Collectors.toList()));
+		selectItemVOList.addAll(creditCardVOList.stream().map(
+				cc -> new SelectItemVO(MoneyTransactionConstant.CREDIT_CARD_PREFIX + cc.getShortName(), cc.getId()))
+				.collect(Collectors.toList()));
 
 		selectItemVOList.addAll(savingVOList.stream()
-				.map(s -> new SelectItemVO("Saving - " + s.getShortName(), s.getId())).collect(Collectors.toList()));
+				.map(s -> new SelectItemVO(MoneyTransactionConstant.SAVING_PREFIX + s.getShortName(), s.getId()))
+				.collect(Collectors.toList()));
 
 		return selectItemVOList;
 	}

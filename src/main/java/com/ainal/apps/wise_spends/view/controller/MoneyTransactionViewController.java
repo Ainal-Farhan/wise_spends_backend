@@ -15,6 +15,7 @@ import com.ainal.apps.wise_spends.common.reference.MoneyTransactionTypeEnum;
 import com.ainal.apps.wise_spends.common.service.mny.ICreditCardService;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyStorageService;
 import com.ainal.apps.wise_spends.common.service.mny.ISavingService;
+import com.ainal.apps.wise_spends.constant.MoneyTransactionConstant;
 import com.ainal.apps.wise_spends.form.view.object.MoneyTransactionFormVO;
 import com.ainal.apps.wise_spends.manager.IMoneyStorageManager;
 import com.ainal.apps.wise_spends.manager.IMoneyTransactionManager;
@@ -108,13 +109,14 @@ public class MoneyTransactionViewController {
 		from.setValue(moneyTransaction.getFromId());
 
 		if (moneyTransaction.getFlagMoneyStorage()) {
-			from.setTitle("Money Storage - "
+			from.setTitle(MoneyTransactionConstant.MONEY_STORAGE_PREFIX
 					+ moneyStorageService.findMoneyStorageById((Long) from.getValue()).getFullName());
 		} else if (moneyTransaction.getFlagCreditCard()) {
-			from.setTitle(
-					"Credit Card - " + creditCardService.findCreditCardById((Long) from.getValue()).getShortName());
+			from.setTitle(MoneyTransactionConstant.CREDIT_CARD_PREFIX
+					+ creditCardService.findCreditCardById((Long) from.getValue()).getShortName());
 		} else if (moneyTransaction.getFlagSaving()) {
-			from.setTitle("Saving - " + savingService.findSavingById((Long) from.getValue()).getShortName());
+			from.setTitle(MoneyTransactionConstant.SAVING_PREFIX
+					+ savingService.findSavingById((Long) from.getValue()).getShortName());
 		}
 
 		List<MoneyTransactionReferenceVO> moneyTransactionReferenceVOList = moneyTransactionReferenceManager

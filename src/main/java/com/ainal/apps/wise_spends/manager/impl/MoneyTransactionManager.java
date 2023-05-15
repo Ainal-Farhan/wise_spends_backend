@@ -19,6 +19,7 @@ import com.ainal.apps.wise_spends.common.service.mny.IMoneyStorageService;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyTransactionService;
 import com.ainal.apps.wise_spends.common.service.mny.ISavingService;
 import com.ainal.apps.wise_spends.common.service.ref.IMoneyTransactionReferenceService;
+import com.ainal.apps.wise_spends.constant.MoneyTransactionConstant;
 import com.ainal.apps.wise_spends.form.view.object.MoneyTransactionFormVO;
 import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.manager.ICurrentUserManager;
@@ -69,7 +70,7 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 		MoneyTransaction moneyTransaction = new MoneyTransaction();
 		setMoneyTransactionData(moneyTransaction, moneyTransactionFormVO, request);
 		moneyTransaction = moneyTransactionService.save(moneyTransaction);
-		afterSave(moneyTransaction, moneyTransactionFormVO, request);
+		afterSave(moneyTransaction, request);
 		return moneyTransaction;
 	}
 
@@ -79,7 +80,7 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 		MoneyTransaction moneyTransaction = getMoneyTransactionById(moneyTransactionFormVO.getId());
 		setMoneyTransactionData(moneyTransaction, moneyTransactionFormVO, request);
 		moneyTransaction = moneyTransactionService.save(moneyTransaction);
-		afterSave(moneyTransaction, moneyTransactionFormVO, request);
+		afterSave(moneyTransaction, request);
 		return moneyTransaction;
 	}
 
@@ -107,42 +108,49 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 		moneyTransaction.setFlagMoneyStorage(false);
 		moneyTransaction.setFlagSaving(false);
 
-		if (moneyTransactionFormVO.getFrom().getTitle().contains("Money Storage - ")) {
+		if (moneyTransactionFormVO.getFrom().getTitle().contains(MoneyTransactionConstant.MONEY_STORAGE_PREFIX)) {
 			moneyTransaction.setFlagMoneyStorage(true);
-		} else if (moneyTransactionFormVO.getFrom().getTitle().contains("Credit Card - ")) {
+		} else if (moneyTransactionFormVO.getFrom().getTitle().contains(MoneyTransactionConstant.CREDIT_CARD_PREFIX)) {
 			moneyTransaction.setFlagCreditCard(true);
-		} else if (moneyTransactionFormVO.getFrom().getTitle().contains("Saving - ")) {
+		} else if (moneyTransactionFormVO.getFrom().getTitle().contains(MoneyTransactionConstant.SAVING_PREFIX)) {
 			moneyTransaction.setFlagSaving(true);
 		}
 
 	}
 
-	private void afterSave(MoneyTransaction moneyTransaction, MoneyTransactionFormVO moneyTransactionFormVO,
-			HttpServletRequest request) {
-		if (moneyTransactionFormVO.getFrom().getTitle().contains("Money Storage - ")) {
+	private void afterSave(MoneyTransaction moneyTransaction, HttpServletRequest request) {
+		if (moneyTransaction.getFlagMoneyStorage()) {
 			MoneyStorage moneyStorage = moneyStorageService.findMoneyStorageById(moneyTransaction.getFromId());
-			if (MoneyTransactionTypeEnum.IN.equals(moneyTransactionFormVO.getType())) {
-				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().add(moneyTransactionFormVO.getAmount()));
-			} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransactionFormVO.getType())) {
-				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().subtract(moneyTransactionFormVO.getAmount()));
+			if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
+				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().add(moneyTransaction.getAmount()));
+			} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransaction.getType())) {
+				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().subtract(moneyTransaction.getAmount()));
 			}
 			baseManager.setBaseEntityAttributes(moneyStorage, request);
 			moneyStorageService.saveNewMoneyStorage(moneyStorage);
-		} else if (moneyTransactionFormVO.getFrom().getTitle().contains("Credit Card - ")) {
+		} else if (moneyTransaction.getFlagCreditCard()) {
 			CreditCard creditCard = creditCardService.findCreditCardById(moneyTransaction.getFromId());
-			if (MoneyTransactionTypeEnum.IN.equals(moneyTransactionFormVO.getType())) {
-				creditCard.setCreditAmount(creditCard.getCreditAmount().add(moneyTransactionFormVO.getAmount()));
-			} else if (MoneyTransactionTypeEnum.PAY.equals(moneyTransactionFormVO.getType())) {
-				creditCard.setCreditAmount(creditCard.getCreditAmount().subtract(moneyTransactionFormVO.getAmount()));
+			if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
+				creditCard.setCreditAmount(creditCard.getCreditAmount().add(moneyTransaction.getAmount()));
+			} else if (MoneyTransactionTypeEnum.PAY.equals(moneyTransaction.getType())) {
+				creditCard.setCreditAmount(creditCard.getCreditAmount().subtract(moneyTransaction.getAmount()));
 			}
 			baseManager.setBaseEntityAttributes(creditCard, request);
 			creditCardService.saveCreditCard(creditCard);
-		} else if (moneyTransactionFormVO.getFrom().getTitle().contains("Saving - ")) {
+		} else if (moneyTransaction.getFlagSaving()) {
 			Saving saving = savingService.findSavingById(moneyTransaction.getFromId());
-			if (MoneyTransactionTypeEnum.IN.equals(moneyTransactionFormVO.getType())) {
-				saving.setCurrentAmount(saving.getCurrentAmount().add(moneyTransactionFormVO.getAmount()));
-			} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransactionFormVO.getType())) {
-				saving.setCurrentAmount(saving.getCurrentAmount().subtract(moneyTransactionFormVO.getAmount()));
+			if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
+				saving.setCurrentAmount(saving.getCurrentAmount().add(moneyTransaction.getAmount()));
+			} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransaction.getType())) {
+				saving.setCurrentAmount(saving.getCurrentAmount().subtract(moneyTransaction.getAmount()));
+
+				if (saving.getMoneyStorage() != null) {
+					MoneyStorage moneyStorage = moneyStorageService
+							.findMoneyStorageById(saving.getMoneyStorage().getId());
+					moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().subtract(moneyTransaction.getAmount()));
+					baseManager.setBaseEntityAttributes(moneyStorage, request);
+					moneyStorageService.saveNewMoneyStorage(moneyStorage);
+				}
 			}
 			baseManager.setBaseEntityAttributes(saving, request);
 			savingService.saveSaving(saving);
