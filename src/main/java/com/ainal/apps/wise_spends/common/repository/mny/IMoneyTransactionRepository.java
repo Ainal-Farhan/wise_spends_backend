@@ -11,6 +11,6 @@ import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
 
 public interface IMoneyTransactionRepository extends BaseEntityRepository<MoneyTransaction> {
 
-	@Query("select mt from MoneyTransaction mt where mt.user = :user")
+	@Query("select mt from MoneyTransaction mt where mt.user = :user order by mt.transactionDate desc")
 	List<MoneyTransaction> findByUser(@Param("user") User user);
 }
