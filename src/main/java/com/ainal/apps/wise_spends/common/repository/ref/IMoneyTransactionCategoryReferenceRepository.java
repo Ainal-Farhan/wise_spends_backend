@@ -7,10 +7,10 @@ import org.springframework.data.repository.query.Param;
 
 import com.ainal.apps.wise_spends.common.domain.ref.MoneyTransactionCategoryReference;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
-import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
+import com.ainal.apps.wise_spends.common.repository.IBaseEntityRepository;
 
 public interface IMoneyTransactionCategoryReferenceRepository
-		extends BaseEntityRepository<MoneyTransactionCategoryReference> {
+		extends IBaseEntityRepository<MoneyTransactionCategoryReference> {
 
 	@Query("select mtcr from MoneyTransactionCategoryReference mtcr where mtcr.user = :user")
 	List<MoneyTransactionCategoryReference> findByUser(@Param("user") User user);

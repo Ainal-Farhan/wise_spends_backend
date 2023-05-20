@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import com.ainal.apps.wise_spends.common.domain.usr.Individual;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
-import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
+import com.ainal.apps.wise_spends.common.repository.IBaseEntityRepository;
 
-public interface IIndividualRepository extends BaseEntityRepository<Individual> {
+public interface IIndividualRepository extends IBaseEntityRepository<Individual> {
 	List<Individual> findByEmail(String email);
 	Optional<Individual> findByUser(User user);
 }

@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.ainal.apps.wise_spends.common.domain.ref.MoneyTransactionReference;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
-import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
+import com.ainal.apps.wise_spends.common.repository.IBaseEntityRepository;
 
-public interface IMoneyTransactionReferenceRepository extends BaseEntityRepository<MoneyTransactionReference> {
+public interface IMoneyTransactionReferenceRepository extends IBaseEntityRepository<MoneyTransactionReference> {
 
 	@Query("select mtr from MoneyTransactionReference mtr where mtr.moneyTransactionCategoryReference in (select mtcr from MoneyTransactionCategoryReference mtcr where mtcr.user = :user)")
 	List<MoneyTransactionReference> findByUser(@Param("user") User user);

@@ -7,9 +7,9 @@ import org.springframework.data.repository.query.Param;
 
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
-import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
+import com.ainal.apps.wise_spends.common.repository.IBaseEntityRepository;
 
-public interface IMoneyTransactionRepository extends BaseEntityRepository<MoneyTransaction> {
+public interface IMoneyTransactionRepository extends IBaseEntityRepository<MoneyTransaction> {
 
 	@Query("select mt from MoneyTransaction mt where mt.user = :user order by mt.transactionDate desc")
 	List<MoneyTransaction> findByUser(@Param("user") User user);

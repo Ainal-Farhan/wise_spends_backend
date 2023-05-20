@@ -5,8 +5,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
 
 @NoRepositoryBean
-public interface BaseEntityRepository<E extends BaseEntity>
-		extends CustomRepository<E, Long> {
+public interface IBaseEntityRepository<E extends BaseEntity>
+		extends ICustomRepository<E, Long> {
 
 }
 

@@ -1,4 +1,4 @@
-package com.ainal.apps.wise_spends.common.service.impl.mny;
+package com.ainal.apps.wise_spends.common.service.mny.impl;
 
 import java.util.ArrayList;
 import java.util.List;

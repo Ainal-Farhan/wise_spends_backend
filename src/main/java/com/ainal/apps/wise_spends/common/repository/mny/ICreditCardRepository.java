@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.ainal.apps.wise_spends.common.domain.mny.CreditCard;
-import com.ainal.apps.wise_spends.common.repository.BaseEntityRepository;
+import com.ainal.apps.wise_spends.common.repository.IBaseEntityRepository;
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
 
-public interface ICreditCardRepository extends BaseEntityRepository<CreditCard> {
+public interface ICreditCardRepository extends IBaseEntityRepository<CreditCard> {
 	List<CreditCard> findByMoneyStorage(MoneyStorage moneyStorage);
 
 	@Query("SELECT cc FROM CreditCard cc WHERE cc.moneyStorage IN (SELECT ms FROM MoneyStorage ms WHERE ms.user = :user)")

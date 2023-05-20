@@ -11,4 +11,5 @@ public class TablePrefixConstant {
 	public static final String USR_TABLE_PREFIX = "USR_";
 	public static final String REF_TABLE_PREFIX = "REF_";
 	public static final String MNY_TABLE_PREFIX = "MNY_";
+	public static final String BGT_TABLE_PREFIX = "BGT_";
 }

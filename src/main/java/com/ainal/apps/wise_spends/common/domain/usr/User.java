@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.Type;
 
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
+import com.ainal.apps.wise_spends.common.domain.budget.Budget;
 import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyStorage;
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
@@ -60,6 +61,9 @@ public class User extends BaseEntity {
 
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<MoneyTransaction> moneyTransactionList = new ArrayList<>();
+
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	private List<Budget> budgetList = new ArrayList<>();
 
 	@Override
 	public Long getId() {
@@ -126,6 +130,14 @@ public class User extends BaseEntity {
 
 	public void setMoneyTransactionList(List<MoneyTransaction> moneyTransactionList) {
 		this.moneyTransactionList = moneyTransactionList;
+	}
+
+	public List<Budget> getBudgetList() {
+		return budgetList;
+	}
+
+	public void setBudgetList(List<Budget> budgetList) {
+		this.budgetList = budgetList;
 	}
 
 }
