@@ -65,7 +65,7 @@ public class MoneyTransactionViewController {
 		ModelAndView modelAndView = thymeleafManager.getMainTemplateModelAndView(content, TITLE);
 
 		List<MoneyTransactionVO> moneyTransactionVOList = moneyTransactionManager
-				.populateMoneyTransactionVOList(request);
+				.populateMoneyTransactionVOListLast30Days(request);
 
 		modelAndView.addObject("moneyTransactionVOList", moneyTransactionVOList);
 		modelAndView.addObject("active", SIDEBAR_LIST);

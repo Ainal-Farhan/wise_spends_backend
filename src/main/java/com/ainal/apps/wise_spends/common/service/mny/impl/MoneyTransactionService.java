@@ -1,5 +1,7 @@
 package com.ainal.apps.wise_spends.common.service.mny.impl;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,13 @@ public class MoneyTransactionService implements IMoneyTransactionService {
 	@Override
 	public void deleteById(Long id) {
 		moneyTransactionRepository.deleteById(id);
+	}
+
+	@Override
+	public List<MoneyTransaction> findByUserAndAtleastFromNumDays(User user, int days) {
+		LocalDate startDate = LocalDate.now().minusDays(days);
+		Date startDateAsDate = java.sql.Date.valueOf(startDate);
+		return moneyTransactionRepository.findByUserAndStartDate(user, startDateAsDate);
 	}
 
 }

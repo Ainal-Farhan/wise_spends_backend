@@ -60,7 +60,7 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 
 		return moneyTransactionList.stream().map(mt -> {
 			String fromString = Strings.EMPTY;
-			
+
 			if (mt.getFlagSaving()) {
 				fromString = MoneyTransactionConstant.SAVING_PREFIX;
 				Saving saving = savingService.findSavingById(mt.getFromId());
@@ -178,6 +178,36 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 			baseManager.setBaseEntityAttributes(saving, request);
 			savingService.saveSaving(saving);
 		}
+	}
+
+	@Override
+	public List<MoneyTransactionVO> populateMoneyTransactionVOListLast30Days(HttpServletRequest request) {
+		User currentUser = currentUserManager.getCurrentUser(request);
+		List<MoneyTransaction> moneyTransactionList = moneyTransactionService
+				.findByUserAndAtleastFromNumDays(currentUser, 30);
+
+		return moneyTransactionList.stream().map(mt -> {
+			String fromString = Strings.EMPTY;
+
+			if (mt.getFlagSaving()) {
+				fromString = MoneyTransactionConstant.SAVING_PREFIX;
+				Saving saving = savingService.findSavingById(mt.getFromId());
+				fromString += saving == null || StringUtils.isBlank(saving.getShortName()) ? Strings.EMPTY
+						: saving.getShortName();
+			} else if (mt.getFlagCreditCard()) {
+				fromString = MoneyTransactionConstant.CREDIT_CARD_PREFIX;
+				CreditCard creditCard = creditCardService.findCreditCardById(mt.getFromId());
+				fromString += creditCard == null || StringUtils.isBlank(creditCard.getShortName()) ? Strings.EMPTY
+						: creditCard.getShortName();
+			} else if (mt.getFlagMoneyStorage()) {
+				fromString = MoneyTransactionConstant.MONEY_STORAGE_PREFIX;
+				MoneyStorage moneyStorage = moneyStorageService.findMoneyStorageById(mt.getFromId());
+				fromString += moneyStorage == null || StringUtils.isBlank(moneyStorage.getFullName()) ? Strings.EMPTY
+						: moneyStorage.getFullName();
+			}
+
+			return new MoneyTransactionVO(mt, fromString);
+		}).collect(Collectors.toList());
 	}
 
 }

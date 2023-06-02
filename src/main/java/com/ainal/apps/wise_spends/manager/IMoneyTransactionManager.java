@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface IMoneyTransactionManager {
 	List<MoneyTransactionVO> populateMoneyTransactionVOList(@NonNull HttpServletRequest request);
 
+	List<MoneyTransactionVO> populateMoneyTransactionVOListLast30Days(@NonNull HttpServletRequest request);
+
 	MoneyTransaction getMoneyTransactionById(@NonNull Long moneyTransactionId);
 
 	MoneyTransaction addNewMoneyTransactionForCurrentUser(@NonNull HttpServletRequest request,
