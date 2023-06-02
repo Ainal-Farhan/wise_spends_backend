@@ -50,7 +50,7 @@
 										</div>
 
 										<div class="form-group">
-											<label>Type:</label> <select th:field="*{type}"
+											<label>Type Source:</label> <select th:field="*{type}"
 												class="form-control">
 												<option th:each="type : ${types}" th:value="${type}"
 													th:text="${type.name()}"></option>
@@ -58,7 +58,32 @@
 										</div>
 
 										<div class="form-group">
-											<label>From:</label> <select th:field="*{from}"
+											<label>Source:</label> <select th:field="*{source}"
+												class="form-control">
+												<option th:each="fromIdSelectItem : ${fromIdSelectItemList}"
+													th:value="${fromIdSelectItem}"
+													th:text="${fromIdSelectItem.title}"></option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label>Within System?</label> <select
+												th:field="*{isWithinSystem}" class="form-control">
+												<option th:each="yesNoOption : ${yesNoOptions}"
+													th:value="${yesNoOption}" th:text="${yesNoOption.name()}"></option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label>Type Target:</label> <select th:field="*{typeTarget}"
+												class="form-control">
+												<option th:each="type : ${types}" th:value="${type}"
+													th:text="${type.name()}"></option>
+											</select>
+										</div>
+
+										<div class="form-group">
+											<label>Target:</label> <select th:field="*{target}"
 												class="form-control">
 												<option th:each="fromIdSelectItem : ${fromIdSelectItemList}"
 													th:value="${fromIdSelectItem}"

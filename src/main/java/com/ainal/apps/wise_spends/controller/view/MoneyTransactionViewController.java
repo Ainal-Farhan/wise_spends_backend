@@ -12,6 +12,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
 import com.ainal.apps.wise_spends.common.reference.MoneyTransactionTypeEnum;
+import com.ainal.apps.wise_spends.common.reference.YesNoEnum;
 import com.ainal.apps.wise_spends.common.service.mny.ICreditCardService;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyStorageService;
 import com.ainal.apps.wise_spends.common.service.mny.ISavingService;
@@ -85,6 +86,7 @@ public class MoneyTransactionViewController {
 		modelAndView.addObject("moneyTransactionFormVO", new MoneyTransactionFormVO());
 		modelAndView.addObject("referenceVOList", moneyTransactionReferenceVOList);
 		modelAndView.addObject("types", MoneyTransactionTypeEnum.values());
+		modelAndView.addObject("yesNoOptions", YesNoEnum.values());
 		modelAndView.addObject("fromIdSelectItemList",
 				moneyStorageManager.populateMoneyStorageSavingCreditCardSelectItemVOList(request));
 
@@ -126,6 +128,7 @@ public class MoneyTransactionViewController {
 		modelAndView.addObject("moneyTransactionFormVO", new MoneyTransactionFormVO(moneyTransaction, from));
 		modelAndView.addObject("referenceVOList", moneyTransactionReferenceVOList);
 		modelAndView.addObject("types", MoneyTransactionTypeEnum.values());
+		modelAndView.addObject("yesNoOptions", YesNoEnum.values());
 		modelAndView.addObject("fromIdSelectItemList",
 				moneyStorageManager.populateMoneyStorageSavingCreditCardSelectItemVOList(request));
 

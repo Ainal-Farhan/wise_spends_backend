@@ -1,5 +1,6 @@
 package com.ainal.apps.wise_spends.manager.impl;
 
+import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
 import com.ainal.apps.wise_spends.common.domain.mny.Saving;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
 import com.ainal.apps.wise_spends.common.reference.MoneyTransactionTypeEnum;
+import com.ainal.apps.wise_spends.common.reference.YesNoEnum;
 import com.ainal.apps.wise_spends.common.service.mny.ICreditCardService;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyStorageService;
 import com.ainal.apps.wise_spends.common.service.mny.IMoneyTransactionService;
@@ -93,7 +95,7 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 		MoneyTransaction moneyTransaction = new MoneyTransaction();
 		setMoneyTransactionData(moneyTransaction, moneyTransactionFormVO, request);
 		moneyTransaction = moneyTransactionService.save(moneyTransaction);
-		afterSave(moneyTransaction, request);
+		afterSave(moneyTransaction, request, moneyTransactionFormVO);
 		return moneyTransaction;
 	}
 
@@ -103,7 +105,7 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 		MoneyTransaction moneyTransaction = getMoneyTransactionById(moneyTransactionFormVO.getId());
 		setMoneyTransactionData(moneyTransaction, moneyTransactionFormVO, request);
 		moneyTransaction = moneyTransactionService.save(moneyTransaction);
-		afterSave(moneyTransaction, request);
+		afterSave(moneyTransaction, request, moneyTransactionFormVO);
 		return moneyTransaction;
 	}
 
@@ -125,58 +127,85 @@ public class MoneyTransactionManager implements IMoneyTransactionManager {
 		moneyTransaction.setMoneyTransactionReference(moneyTransactionReferenceService
 				.findMoneyTransactionReferenceById(moneyTransactionFormVO.getMoneyTransactionReferenceId()));
 		moneyTransaction.setType(moneyTransactionFormVO.getType());
-		moneyTransaction.setFromId(Long.parseLong(moneyTransactionFormVO.getFrom().getValue().toString()));
+		moneyTransaction.setFromId(Long.parseLong(moneyTransactionFormVO.getSource().getValue().toString()));
 
 		moneyTransaction.setFlagCreditCard(false);
 		moneyTransaction.setFlagMoneyStorage(false);
 		moneyTransaction.setFlagSaving(false);
 
-		if (moneyTransactionFormVO.getFrom().getTitle().contains(MoneyTransactionConstant.MONEY_STORAGE_PREFIX)) {
+		if (moneyTransactionFormVO.getSource().getTitle().contains(MoneyTransactionConstant.MONEY_STORAGE_PREFIX)) {
 			moneyTransaction.setFlagMoneyStorage(true);
-		} else if (moneyTransactionFormVO.getFrom().getTitle().contains(MoneyTransactionConstant.CREDIT_CARD_PREFIX)) {
+		} else if (moneyTransactionFormVO.getSource().getTitle()
+				.contains(MoneyTransactionConstant.CREDIT_CARD_PREFIX)) {
 			moneyTransaction.setFlagCreditCard(true);
-		} else if (moneyTransactionFormVO.getFrom().getTitle().contains(MoneyTransactionConstant.SAVING_PREFIX)) {
+		} else if (moneyTransactionFormVO.getSource().getTitle().contains(MoneyTransactionConstant.SAVING_PREFIX)) {
 			moneyTransaction.setFlagSaving(true);
 		}
 
 	}
 
-	private void afterSave(MoneyTransaction moneyTransaction, HttpServletRequest request) {
+	private void afterSave(MoneyTransaction moneyTransaction, HttpServletRequest request,
+			MoneyTransactionFormVO moneyTransactionFormVO) {
+		BigDecimal amountSource = BigDecimal.ZERO;
+		BigDecimal amountTarget = BigDecimal.ZERO;
+
+		if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
+			amountSource = amountSource.add(moneyTransactionFormVO.getAmount());
+		} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransaction.getType())
+				|| MoneyTransactionTypeEnum.PAY.equals(moneyTransaction.getType())) {
+			amountSource = amountSource.subtract(moneyTransactionFormVO.getAmount());
+		}
+
+		if (MoneyTransactionTypeEnum.IN.equals(moneyTransactionFormVO.getTypeTarget())) {
+			amountTarget = amountTarget.add(moneyTransactionFormVO.getAmount());
+		} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransactionFormVO.getTypeTarget())
+				|| MoneyTransactionTypeEnum.PAY.equals(moneyTransactionFormVO.getTypeTarget())) {
+			amountTarget = amountTarget.subtract(moneyTransactionFormVO.getAmount());
+		}
+
 		if (moneyTransaction.getFlagMoneyStorage()) {
 			MoneyStorage moneyStorage = moneyStorageService.findMoneyStorageById(moneyTransaction.getFromId());
-			if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
-				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().add(moneyTransaction.getAmount()));
-			} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransaction.getType())) {
-				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().subtract(moneyTransaction.getAmount()));
-			}
+			moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().add(amountSource));
+
 			baseManager.setBaseEntityAttributes(moneyStorage, request);
 			moneyStorageService.saveNewMoneyStorage(moneyStorage);
 		} else if (moneyTransaction.getFlagCreditCard()) {
 			CreditCard creditCard = creditCardService.findCreditCardById(moneyTransaction.getFromId());
-			if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
-				creditCard.setCreditAmount(creditCard.getCreditAmount().add(moneyTransaction.getAmount()));
-			} else if (MoneyTransactionTypeEnum.PAY.equals(moneyTransaction.getType())) {
-				creditCard.setCreditAmount(creditCard.getCreditAmount().subtract(moneyTransaction.getAmount()));
-			}
+			creditCard.setCreditAmount(creditCard.getCreditAmount().add(amountSource));
+
 			baseManager.setBaseEntityAttributes(creditCard, request);
 			creditCardService.saveCreditCard(creditCard);
 		} else if (moneyTransaction.getFlagSaving()) {
 			Saving saving = savingService.findSavingById(moneyTransaction.getFromId());
-			if (MoneyTransactionTypeEnum.IN.equals(moneyTransaction.getType())) {
-				saving.setCurrentAmount(saving.getCurrentAmount().add(moneyTransaction.getAmount()));
-			} else if (MoneyTransactionTypeEnum.OUT.equals(moneyTransaction.getType())) {
-				saving.setCurrentAmount(saving.getCurrentAmount().subtract(moneyTransaction.getAmount()));
+			saving.setCurrentAmount(saving.getCurrentAmount().add(amountSource));
 
-				if (saving.getMoneyStorage() != null) {
-					MoneyStorage moneyStorage = moneyStorageService
-							.findMoneyStorageById(saving.getMoneyStorage().getId());
-					moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().subtract(moneyTransaction.getAmount()));
-					baseManager.setBaseEntityAttributes(moneyStorage, request);
-					moneyStorageService.saveNewMoneyStorage(moneyStorage);
-				}
-			}
 			baseManager.setBaseEntityAttributes(saving, request);
 			savingService.saveSaving(saving);
+		}
+
+		if (YesNoEnum.YES.equals(moneyTransactionFormVO.getIsWithinSystem())
+				& moneyTransactionFormVO.getTarget() != null) {
+			Long id = Long.parseLong(moneyTransactionFormVO.getTarget().getValue().toString());
+			if (moneyTransactionFormVO.getTarget().getTitle().contains(MoneyTransactionConstant.MONEY_STORAGE_PREFIX)) {
+				MoneyStorage moneyStorage = moneyStorageService.findMoneyStorageById(id);
+				moneyStorage.setTotalAmount(moneyStorage.getTotalAmount().add(amountTarget));
+
+				baseManager.setBaseEntityAttributes(moneyStorage, request);
+				moneyStorageService.saveNewMoneyStorage(moneyStorage);
+			} else if (moneyTransactionFormVO.getTarget().getTitle()
+					.contains(MoneyTransactionConstant.CREDIT_CARD_PREFIX)) {
+				CreditCard creditCard = creditCardService.findCreditCardById(id);
+				creditCard.setCreditAmount(creditCard.getCreditAmount().add(amountTarget));
+
+				baseManager.setBaseEntityAttributes(creditCard, request);
+				creditCardService.saveCreditCard(creditCard);
+			} else if (moneyTransactionFormVO.getTarget().getTitle().contains(MoneyTransactionConstant.SAVING_PREFIX)) {
+				Saving saving = savingService.findSavingById(id);
+				saving.setCurrentAmount(saving.getCurrentAmount().add(amountTarget));
+
+				baseManager.setBaseEntityAttributes(saving, request);
+				savingService.saveSaving(saving);
+			}
 		}
 	}
 

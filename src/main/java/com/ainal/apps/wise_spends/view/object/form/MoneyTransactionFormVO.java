@@ -7,6 +7,7 @@ import java.time.ZoneId;
 
 import com.ainal.apps.wise_spends.common.domain.mny.MoneyTransaction;
 import com.ainal.apps.wise_spends.common.reference.MoneyTransactionTypeEnum;
+import com.ainal.apps.wise_spends.common.reference.YesNoEnum;
 import com.ainal.apps.wise_spends.view.object.SelectItemVO;
 
 public class MoneyTransactionFormVO implements IFormVO {
@@ -15,13 +16,16 @@ public class MoneyTransactionFormVO implements IFormVO {
 
 	private Long id;
 	private MoneyTransactionTypeEnum type;
-	private SelectItemVO from;
+	private SelectItemVO source;
 	private BigDecimal amount;
 	private LocalDate transactionDate;
 	private Long moneyTransactionReferenceId;
+	private YesNoEnum isWithinSystem;
+	private SelectItemVO target;
+	private MoneyTransactionTypeEnum typeTarget;
 
 	public MoneyTransactionFormVO() {
-
+		this.isWithinSystem = YesNoEnum.NO;
 	}
 
 	public MoneyTransactionFormVO(MoneyTransaction moneyTransaction, SelectItemVO from) {
@@ -32,7 +36,9 @@ public class MoneyTransactionFormVO implements IFormVO {
 					.toLocalDate();
 			this.amount = (moneyTransaction.getAmount() == null ? BigDecimal.valueOf(0) : moneyTransaction.getAmount())
 					.setScale(2, RoundingMode.HALF_UP);
-			this.from = from;
+			this.source = from;
+			this.target = null;
+			this.isWithinSystem = YesNoEnum.NO;
 
 			if (moneyTransaction.getMoneyTransactionReference() != null) {
 				this.moneyTransactionReferenceId = moneyTransaction.getMoneyTransactionReference().getId();
@@ -56,12 +62,12 @@ public class MoneyTransactionFormVO implements IFormVO {
 		this.type = type;
 	}
 
-	public SelectItemVO getFrom() {
-		return from;
+	public SelectItemVO getSource() {
+		return source;
 	}
 
-	public void setFrom(SelectItemVO from) {
-		this.from = from;
+	public void setSource(SelectItemVO source) {
+		this.source = source;
 	}
 
 	public BigDecimal getAmount() {
@@ -86,6 +92,30 @@ public class MoneyTransactionFormVO implements IFormVO {
 
 	public void setMoneyTransactionReferenceId(Long moneyTransactionReferenceId) {
 		this.moneyTransactionReferenceId = moneyTransactionReferenceId;
+	}
+
+	public YesNoEnum getIsWithinSystem() {
+		return isWithinSystem;
+	}
+
+	public void setIsWithinSystem(YesNoEnum isWithinSystem) {
+		this.isWithinSystem = isWithinSystem;
+	}
+
+	public SelectItemVO getTarget() {
+		return target;
+	}
+
+	public void setTarget(SelectItemVO target) {
+		this.target = target;
+	}
+
+	public MoneyTransactionTypeEnum getTypeTarget() {
+		return typeTarget;
+	}
+
+	public void setTypeTarget(MoneyTransactionTypeEnum typeTarget) {
+		this.typeTarget = typeTarget;
 	}
 
 }
