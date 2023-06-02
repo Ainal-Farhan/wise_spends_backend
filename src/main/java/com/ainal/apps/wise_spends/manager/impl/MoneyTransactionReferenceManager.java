@@ -11,12 +11,12 @@ import org.springframework.stereotype.Component;
 import com.ainal.apps.wise_spends.common.domain.ref.MoneyTransactionReference;
 import com.ainal.apps.wise_spends.common.domain.usr.User;
 import com.ainal.apps.wise_spends.common.service.ref.IMoneyTransactionReferenceService;
-import com.ainal.apps.wise_spends.form.view.object.MoneyTransactionReferenceFormVO;
 import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.manager.ICurrentUserManager;
 import com.ainal.apps.wise_spends.manager.IMoneyTransactionCategoryReferenceManager;
 import com.ainal.apps.wise_spends.manager.IMoneyTransactionReferenceManager;
 import com.ainal.apps.wise_spends.view.object.MoneyTransactionReferenceVO;
+import com.ainal.apps.wise_spends.view.object.form.MoneyTransactionReferenceFormVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 

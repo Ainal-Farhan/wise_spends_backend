@@ -22,11 +22,11 @@ import com.ainal.apps.wise_spends.common.service.mny.IMoneyTransactionService;
 import com.ainal.apps.wise_spends.common.service.mny.ISavingService;
 import com.ainal.apps.wise_spends.common.service.ref.IMoneyTransactionReferenceService;
 import com.ainal.apps.wise_spends.constant.MoneyTransactionConstant;
-import com.ainal.apps.wise_spends.form.view.object.MoneyTransactionFormVO;
 import com.ainal.apps.wise_spends.manager.IBaseManager;
 import com.ainal.apps.wise_spends.manager.ICurrentUserManager;
 import com.ainal.apps.wise_spends.manager.IMoneyTransactionManager;
 import com.ainal.apps.wise_spends.view.object.MoneyTransactionVO;
+import com.ainal.apps.wise_spends.view.object.form.MoneyTransactionFormVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 

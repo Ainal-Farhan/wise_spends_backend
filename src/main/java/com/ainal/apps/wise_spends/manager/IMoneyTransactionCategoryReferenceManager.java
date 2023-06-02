@@ -3,8 +3,8 @@ package com.ainal.apps.wise_spends.manager;
 import java.util.List;
 
 import com.ainal.apps.wise_spends.common.domain.ref.MoneyTransactionCategoryReference;
-import com.ainal.apps.wise_spends.form.view.object.MoneyTransactionCategoryReferenceFormVO;
 import com.ainal.apps.wise_spends.view.object.MoneyTransactionCategoryReferenceVO;
+import com.ainal.apps.wise_spends.view.object.form.MoneyTransactionCategoryReferenceFormVO;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpServletRequest;

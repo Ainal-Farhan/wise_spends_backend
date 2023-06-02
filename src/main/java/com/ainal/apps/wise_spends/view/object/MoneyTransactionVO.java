@@ -3,7 +3,6 @@ package com.ainal.apps.wise_spends.view.object;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.ZoneId;
-import java.util.Date;
 
 import org.apache.logging.log4j.util.Strings;
 
@@ -40,7 +39,7 @@ public class MoneyTransactionVO implements IVO {
 					.setScale(2, RoundingMode.HALF_UP);
 			this.transactionDate = Strings.EMPTY;
 			if (moneyTransaction.getTransactionDate() != null) {
-				this.transactionDate=moneyTransaction.getTransactionDate().toInstant().atZone(ZoneId.systemDefault())
+				this.transactionDate = moneyTransaction.getTransactionDate().toInstant().atZone(ZoneId.systemDefault())
 						.toLocalDate().toString();
 			}
 			this.type = moneyTransaction.getType();
