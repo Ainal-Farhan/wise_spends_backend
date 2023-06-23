@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.ainal.apps.wise_spends.manager.IMoneyTransactionReferenceManager;
+import com.ainal.apps.wise_spends.reference.api.rest.RestApiReference;
 import com.ainal.apps.wise_spends.view.object.form.MoneyTransactionReferenceFormVO;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/transaction_reference")
+@RequestMapping(RestApiReference.ENDPOINT_MONEY_TRANSACTION_REFERENCE)
 public class MoneyTransactionReferenceRestController {
 	@Autowired
 	private IMoneyTransactionReferenceManager moneyTransactionReferenceManager;

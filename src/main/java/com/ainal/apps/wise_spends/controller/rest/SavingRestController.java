@@ -11,13 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.ainal.apps.wise_spends.manager.ISavingManager;
+import com.ainal.apps.wise_spends.reference.api.rest.RestApiReference;
 import com.ainal.apps.wise_spends.view.object.form.SavingFormVO;
 
 import io.micrometer.common.lang.NonNull;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/saving")
+@RequestMapping(RestApiReference.ENDPOINT_SAVING)
 public class SavingRestController {
 	@Autowired
 	private ISavingManager savingManager;

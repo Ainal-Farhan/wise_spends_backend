@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 import org.hibernate.annotations.Type;
 
+import com.ainal.apps.wise_spends.common.domain.access.SidebarMenu;
 import com.ainal.apps.wise_spends.common.domain.base.BaseEntity;
 import com.ainal.apps.wise_spends.common.domain.constant.TablePrefixConstant;
 import com.ainal.apps.wise_spends.common.domain.ref.UserRole;
@@ -26,6 +27,8 @@ import jakarta.persistence.ForeignKey;
 public class Role extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
+	private static final String FK_PREFIX = "FK_UR_" + TablePrefixConstant.USR_TABLE_PREFIX;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleSeq")
 	@SequenceGenerator(name = "roleSeq", sequenceName = "SEQ_ROLE", allocationSize = 1)
@@ -41,13 +44,18 @@ public class Role extends BaseEntity {
 	private Boolean flagMainRole = Boolean.FALSE;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = true)
-	@JoinColumn(name = "USER_ROLE_ID", foreignKey = @ForeignKey(name = "FK_UR_REF_USER_ROLE_ID"))
+	@JoinColumn(name = "USER_ROLE_ID", foreignKey = @ForeignKey(name = FK_PREFIX + "USER_ROLE_ID"))
 	private UserRole userRole;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
-	@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = "FK_UR_USR_USER_ID"))
+	@JoinColumn(name = "USER_ID", foreignKey = @ForeignKey(name = FK_PREFIX + "USER_ID"))
 	private User user;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@JoinColumn(name = "SIDEBAR_MENU_ID", foreignKey = @ForeignKey(name = FK_PREFIX + "SIDEBAR_MENU_ID"))
+	private SidebarMenu sidebarMenu;
 
 	@Override
 	public Long getId() {
@@ -89,5 +97,13 @@ public class Role extends BaseEntity {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public SidebarMenu getSidebarMenu() {
+		return sidebarMenu;
+	}
+
+	public void setSidebarMenu(SidebarMenu sidebarMenu) {
+		this.sidebarMenu = sidebarMenu;
 	}
 }
