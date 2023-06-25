@@ -34,7 +34,7 @@ public class SecurityConfiguration {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/**").permitAll()
-						.requestMatchers("/#/app-login").permitAll().requestMatchers("/login/**").permitAll()
+						.requestMatchers("/#/**").permitAll().requestMatchers("/login/**").permitAll()
 						.requestMatchers("/ui/examples/template/**").permitAll().requestMatchers("/error/**")
 						.permitAll().requestMatchers("/css/**").permitAll().requestMatchers("/img/**").permitAll()
 						.requestMatchers("/js/**").permitAll().requestMatchers("/scss/**").permitAll()
@@ -54,7 +54,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	AuthenticationEntryPoint authenticationEntryPoint() {
-		return new LoginUrlAuthenticationEntryPoint("/login/auth");
+		return new LoginUrlAuthenticationEntryPoint("/#/app-login");
 	}
 
 	@Bean
