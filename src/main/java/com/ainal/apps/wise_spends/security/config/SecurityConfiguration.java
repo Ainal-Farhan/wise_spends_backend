@@ -55,7 +55,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	AuthenticationEntryPoint authenticationEntryPoint() {
-		return new LoginUrlAuthenticationEntryPoint("/app/#/app-login");
+		return new LoginUrlAuthenticationEntryPoint("/#/app/app-login");
 	}
 
 	@Bean
