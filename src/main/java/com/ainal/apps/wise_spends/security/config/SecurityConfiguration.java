@@ -35,6 +35,7 @@ public class SecurityConfiguration {
 		http.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/v1/auth/**").permitAll()
 						.requestMatchers("/#/**").permitAll().requestMatchers("/login/**").permitAll()
+      .requestMatchers("/app/**").permitAll()
 						.requestMatchers("/ui/examples/template/**").permitAll().requestMatchers("/error/**")
 						.permitAll().requestMatchers("/css/**").permitAll().requestMatchers("/img/**").permitAll()
 						.requestMatchers("/js/**").permitAll().requestMatchers("/scss/**").permitAll()
@@ -54,7 +55,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	AuthenticationEntryPoint authenticationEntryPoint() {
-		return new LoginUrlAuthenticationEntryPoint("/app-login");
+		return new LoginUrlAuthenticationEntryPoint("/app/#/app-login");
 	}
 
 	@Bean
