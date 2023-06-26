@@ -44,7 +44,9 @@ public class MoneyStorageVO implements IVO {
 			if (!CollectionUtils.isEmpty(moneyStorage.getSavingList())) {
 				for (Saving saving : moneyStorage.getSavingList()) {
 					if (saving.getCurrentAmount() != null) {
-						unallocatedAmount = unallocatedAmount.subtract(saving.getCurrentAmount());
+      BigDecimal amount = saving.getCurrentAmount();
+      amount = amount.signum() == -1? BigDecimal.ZERO.subtract(amount) : amount;
+						unallocatedAmount = unallocatedAmount.subtract(amount);
 					}
 				}
 			}
