@@ -32,28 +32,26 @@ public class MoneyStorageVO implements IVO {
 			this.abbreviation = moneyStorage.getAbbreviation();
 
 			BigDecimal unallocatedAmount = this.totalAmount;
+   BigDecimal totalAmount = BigDecimal.ZERO;
 
 			if (!CollectionUtils.isEmpty(moneyStorage.getCreditCardList())) {
 				for (CreditCard cardCredit : moneyStorage.getCreditCardList()) {
 					if (cardCredit.getCreditAmount() != null) {
-						unallocatedAmount = unallocatedAmount.subtract(cardCredit.getCreditAmount());
+						totalAmount = totalAmount.add(cardCredit.getCreditAmount());
 					}
 				}
 			}
 
 			if (!CollectionUtils.isEmpty(moneyStorage.getSavingList())) {
 				for (Saving saving : moneyStorage.getSavingList()) {
-      				BigDecimal currentAmount = saving.getCurrentAmount();
-					if (currentAmount != null) {
-						boolean isNegative = currentAmount.signum() == -1;
-      					      	currentAmount = isNegative? currentAmount.negate() : currentAmount;
-						unallocatedAmount = (unallocatedAmount.signum() != -1 || isNegative)?
-							unallocatedAmount.subtract(currentAmount)
-							: unallocatedAmount.add(currentAmount);
+					if (saving.getCurrentAmount() != null) {
+						    totalAmount = totalAmount.add(saving.getCurrentAmount().signum() == -1? 
+              saving.getCurrentAmount.negate()
+              : saving.getCurrentAmount());
 					}
 				}
 			}
-
+   unallocatedAmount = unallocatedAmount.subtract(totalAmount);
 			this.unallocatedAmount = unallocatedAmount.setScale(2, RoundingMode.HALF_UP);
 		}
 	}
