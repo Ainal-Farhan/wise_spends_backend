@@ -46,7 +46,7 @@ public class MoneyStorageVO implements IVO {
 				for (Saving saving : moneyStorage.getSavingList()) {
 					if (saving.getCurrentAmount() != null) {
 						    totalAmount = totalAmount.add(saving.getCurrentAmount().signum() == -1? 
-              saving.getCurrentAmount.negate()
+              saving.getCurrentAmount().negate()
               : saving.getCurrentAmount());
 					}
 				}
