@@ -13,7 +13,7 @@ public class HomeViewController {
 	@Autowired
 	IThymeleafManager thymeleafManager;
 
-	@GetMapping(path = { "/home" })
+	@GetMapping(path = { "/", "/home" })
 	public ModelAndView home() {
 		return thymeleafManager.getMainTemplateModelAndView(new ThymeleafFragmentVO("content", "/public/home"), "Home");
 	}
