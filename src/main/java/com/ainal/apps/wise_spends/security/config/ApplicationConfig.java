@@ -13,13 +13,16 @@ import com.ainal.apps.wise_spends.security.config.service.IUserJwtViewObjectServ
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-	private final IUserJwtViewObjectService userJwtViewObjectService;
+	
+	@Autowired
+	private IUserJwtViewObjectService userJwtViewObjectService;
 
 	@Bean
 	UserDetailsService userDetailsService() {

@@ -1,5 +1,6 @@
 package com.ainal.apps.wise_spends.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -26,9 +27,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
-	private final AuthenticationProvider authenticationProvider;
-	private final WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
+	@Autowired
+	private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+	@Autowired
+	private AuthenticationProvider authenticationProvider;
+
+	@Autowired
+	private WiseSpendsPropertiesUtils wiseSpendsPropertiesUtils;
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
