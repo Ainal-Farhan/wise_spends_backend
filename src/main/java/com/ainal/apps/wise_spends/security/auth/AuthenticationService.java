@@ -86,8 +86,11 @@ public class AuthenticationService {
 				credential.getFlagUsernameIsEmail() ? individual.getEmail() : credential.getUsername());
 		user = userRepository.saveAndFlush(user);
 
-		UserRole userRole = new UserRole();
-		userRole = userRoleRepository.findByCode("N_USR").orElse(null);
+		UserRole userRole = userRoleRepository.findByCode("N_USR");
+		if (userRole == null) {
+			userRole = new UserRole();
+			userRole.setCode("N_USR");
+		}
 
 		Role role = new Role();
 		role.setUser(user);

@@ -14,7 +14,7 @@
   <groupId>com.ainal.apps</groupId>
   <artifactId>wise_spends</artifactId>
   <version>0.0.1</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>wise_spends</name>
   <description>Backend for Wise Spends Application</description>
